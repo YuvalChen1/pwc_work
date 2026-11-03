@@ -13,6 +13,21 @@ type ChatItem = ChatMessage | { role: "notice"; issue: ValidationIssue };
 const GREETING =
   "שלום! אני אעזור לך להכין טיוטת כתב תביעה לבית המשפט לתביעות קטנות. אשאל כמה שאלות קצרות, אחת-שתיים בכל פעם, ובסוף אנסח טיוטה שתוכל/י לבדוק ולהשלים.\n\nספר/י לי בקצרה: מה קרה ומול מי?";
 
+/** Renders URLs as LTR links so they don't scramble inside right-to-left text. */
+function Linkify({ text }: { text: string }) {
+  return (
+    <>
+      {text.split(/(https?:\/\/[^\s,)]+[^\s,.)])/g).map((part, i) =>
+        /^https?:\/\//.test(part) ? (
+          <a key={i} href={part} target="_blank" rel="noreferrer" dir="ltr">{part}</a>
+        ) : (
+          part
+        ),
+      )}
+    </>
+  );
+}
+
 const SEVERITY_LABEL = { blocker: "חוסם", warning: "אזהרה", info: "המלצה" } as const;
 const DRAFT_STEPS = ["מנסח את כתב התביעה", "בקרת איכות: בודק מול תיק התביעה", "מתקן את הממצאים", "בדיקה חוזרת"];
 
@@ -33,7 +48,9 @@ export default function Home() {
   const validation = validateCase(caseFile, unknownFields, todayInIsrael());
   const fields = computeFieldStatuses(caseFile, unknownFields);
 
-  useEffect(() => endRef.current?.scrollIntoView({ behavior: "smooth" }), [items, busy]);
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [items, busy]);
 
   async function send() {
     const text = input.trim();
@@ -132,10 +149,10 @@ export default function Home() {
                 m.role === "notice" ? (
                   <div key={i} className={`notice ${m.issue.severity}`}>
                     <b>בדיקה אוטומטית · {SEVERITY_LABEL[m.issue.severity]}</b>
-                    {m.issue.message}
+                    <Linkify text={m.issue.message} />
                   </div>
                 ) : (
-                  <div key={i} className={`msg ${m.role}`}>{m.content}</div>
+                  <div key={i} className={`msg ${m.role}`}><Linkify text={m.content} /></div>
                 ),
               )}
               {busy && <div className="typing">מקליד…</div>}
@@ -152,7 +169,8 @@ export default function Home() {
                     send();
                   }
                 }}
-                placeholder="כתבו כאן… (Enter לשליחה, Shift+Enter לשורה חדשה)"
+                placeholder="כתבו כאן…"
+                title="Enter לשליחה, Shift+Enter לשורה חדשה"
                 rows={1}
                 disabled={busy}
                 aria-label="הודעה"

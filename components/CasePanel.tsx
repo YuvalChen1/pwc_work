@@ -57,7 +57,7 @@ export function CasePanel({
             <div className="group-title">בדיקות אוטומטיות</div>
             <ul className="issues">
               {shownIssues.map((i) => (
-                <li key={i.code} className={i.severity}>{i.message}</li>
+                <li key={i.code} className={i.severity}>{i.message.split(/(https?:\/\/\S+[^\s,.)])/g).map((p, k) => (/^https?:/.test(p) ? <a key={k} href={p} target="_blank" rel="noreferrer" dir="ltr">{p}</a> : p))}</li>
               ))}
             </ul>
           </>
@@ -71,7 +71,7 @@ export function CasePanel({
           <div className="hint">
             {validation.issues.some((i) => i.severity === "blocker" && i.code !== "core_missing")
               ? "יש לטפל בבעיה החוסמת שלמעלה לפני יצירת הטיוטה."
-              : `עוד חסר: ${missingLabels.join(", ")}. אפשר לענות "לא יודע" — השדה יסומן להשלמה.`}
+              : `עוד ${missingLabels.length} שדות חובה חסרים. אפשר לענות "לא יודע" — השדה יסומן להשלמה.`}
           </div>
         )}
       </div>
