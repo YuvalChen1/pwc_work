@@ -31,6 +31,11 @@ function highlight(children: ReactNode): ReactNode {
   });
 }
 
+/** Party details are written one per line; keep those line breaks (Markdown would merge them). */
+function withLineBreaks(md: string) {
+  return md.replace(/([^\n])\n(?=[^\n])/g, "$1  \n");
+}
+
 function textOf(node: ReactNode): string {
   if (typeof node === "string" || typeof node === "number") return String(node);
   if (Array.isArray(node)) return node.map(textOf).join("");
@@ -57,7 +62,7 @@ function IssueList({ items }: { items: DraftResult["findings"] }) {
             <span className="badge">{CATEGORY[i.category] ?? i.category}</span>
             <span className="badge">{i.source === "code" ? "בדיקת קוד" : "מבקר AI"}</span>
           </div>
-          {i.quote && <q>”{i.quote}“</q>}
+          {i.quote && <q>{i.quote.replace(/^["”“]+|["”“]+$/g, "")}</q>}
           <div>{i.explanation}</div>
         </div>
       ))}
@@ -99,7 +104,7 @@ export function DraftView({ result, onBack }: { result: DraftResult; onBack: () 
         </div>
         <div className="doc-scroll">
           <article className="doc">
-            <ReactMarkdown components={components}>{result.draft}</ReactMarkdown>
+            <ReactMarkdown components={components}>{withLineBreaks(result.draft)}</ReactMarkdown>
           </article>
         </div>
       </section>
