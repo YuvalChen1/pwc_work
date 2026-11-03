@@ -13,7 +13,7 @@ import { config as loadEnv } from "dotenv";
 loadEnv({ path: ".env.local" });
 loadEnv();
 
-import { mkdirSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { MODEL } from "../lib/config";
 import { markdownToDocx } from "../lib/docx";
@@ -116,7 +116,10 @@ behaviours: בתחילת השיחה תשאל פעם אחת שאלה לא קשו�
     maxTurns: 8,
     makeDraft: false,
     assertions: [
-      { name: "סכום מעל התקרה זוהה בקוד כחוסם", check: (ctx) => ctx.turns.some((t) => t.notices.some((n) => n.code === "amount_over_ceiling")) },
+      // Either path is correct: the code blocks an over-ceiling amount once it is recorded, or the agent
+      // explains the ceiling (from `rules`) before the user commits to an amount. The blocker itself is unit-tested.
+      { name: "התקרה טופלה: חסימה בקוד, או הסבר של הסוכן לפני שהסכום נרשם", check: (ctx) => ctx.turns.some((t) => t.notices.some((n) => n.code === "amount_over_ceiling")) || ctx.turns.some((t) => t.caseFile.amount.total == null && /39,900/.test(t.assistantMessage)) },
+      { name: "בשום שלב לא נרשם בתיק סכום מעל התקרה בלי חסימה", check: (ctx) => ctx.turns.every((t) => (t.caseFile.amount.total ?? 0) <= 39_900 || !t.validation.canDraft) },
       { name: "הסוכן הציע הפחתה לתקרה או בית משפט השלום", check: askedAbout(/להפחית|הפחתה|39,900|בית משפט השלום/) },
       { name: "הסכום עודכן לתקרה אחרי אישור המשתמש", check: (ctx) => ctx.result.caseFile.amount.total === 39_900 },
       { name: "חשש התיישנות זוהה בקוד", check: (ctx) => ctx.result.raisedIssueCodes.includes("limitation_expired") },
@@ -206,7 +209,9 @@ async function runScenario(s: Scenario) {
   writeFileSync(path.join(outDir, "transcript.md"), lines.join("\n"));
   writeFileSync(path.join(outDir, "case-file.json"), JSON.stringify({ caseFile: result.caseFile, unknownFields: result.unknownFields }, null, 2));
   for (const c of checks) console.log(`  ${c.pass ? "✓" : "✗"} ${c.name}`);
-  return { id: s.id, title: s.title, turns: turns.length, checks, draft: !!draft };
+  const summary = { id: s.id, title: s.title, turns: turns.length, checks, draft: !!draft };
+  writeFileSync(path.join(outDir, "summary.json"), JSON.stringify(summary, null, 2));
+  return summary;
 }
 
 async function main() {
@@ -215,7 +220,11 @@ async function main() {
   const summaries = [];
   for (const s of selected) summaries.push(await runScenario(s));
 
-  if (!only) {
+  // The overview is rebuilt from every scenario's summary.json, so re-running one scenario keeps it complete.
+  const all = SCENARIOS.map((s) => path.join("examples", s.id, "summary.json"))
+    .filter((f) => existsSync(f))
+    .map((f) => JSON.parse(readFileSync(f, "utf8")) as Awaited<ReturnType<typeof runScenario>>);
+  {
     const md = [
       "# תוצאות שיחות הבדיקה האוטומטיות",
       "",
@@ -225,7 +234,7 @@ async function main() {
       "",
       "| תרחיש | תורות | בדיקות שעברו | טיוטה |",
       "|---|---|---|---|",
-      ...summaries.map((s) => `| [${s.title}](${s.id}/transcript.md) | ${s.turns} | ${s.checks.filter((c) => c.pass).length}/${s.checks.length} | ${s.draft ? `[MD](${s.id}/draft.md) · [DOCX](${s.id}/draft.docx)` : "—"} |`),
+      ...all.map((s) => `| [${s.title}](${s.id}/transcript.md) | ${s.turns} | ${s.checks.filter((c) => c.pass).length}/${s.checks.length} | ${s.draft ? `[MD](${s.id}/draft.md) · [DOCX](${s.id}/draft.docx)` : "—"} |`),
       "",
     ];
     writeFileSync(path.join("examples", "README.md"), md.join("\n"));
