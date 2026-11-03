@@ -31,6 +31,13 @@ function highlight(children: ReactNode): ReactNode {
   });
 }
 
+function textOf(node: ReactNode): string {
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(textOf).join("");
+  if (isValidElement<{ children?: ReactNode }>(node)) return textOf(node.props.children);
+  return "";
+}
+
 function download(blob: Blob, name: string) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -72,7 +79,9 @@ export function DraftView({ result, onBack }: { result: DraftResult; onBack: () 
     download(new Blob([`> **טיוטה** — ${DISCLAIMER}\n\n${result.draft}\n`], { type: "text/markdown;charset=utf-8" }), "טיוטת-כתב-תביעה.md");
 
   const components = {
-    p: ({ children }: { children?: ReactNode }) => <p>{highlight(children)}</p>,
+    p: ({ children }: { children?: ReactNode }) => (
+      <p style={textOf(children).match(/^-\s*נגד\s*-$/) ? { textAlign: "center" } : undefined}>{highlight(children)}</p>
+    ),
     li: ({ children }: { children?: ReactNode }) => <li>{highlight(children)}</li>,
     h1: ({ children }: { children?: ReactNode }) => <h1>{highlight(children)}</h1>,
   };

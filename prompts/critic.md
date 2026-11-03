@@ -18,5 +18,6 @@ Rules:
 - `suggested_fix` must be concrete and must not introduce new facts — when the fix for a missing detail is a placeholder, say so.
 - The code checks are reliable; include their findings as issues if the draft really has the problem, and don't contradict them.
 - `[להשלמה: …]` placeholders are correct behaviour, not defects.
+- Expected behaviour, not defects: the heading city taken from the defendant's address; the standard relief wording (הפרשי הצמדה וריבית, הוצאות משפט); the declaration about the number of claims filed this year.
 - Do not report stylistic preferences as issues if the text is correct and clear. If the draft is good, return an empty `issues` list.
 - `summary`: two or three sentences in Hebrew on the draft's overall quality.

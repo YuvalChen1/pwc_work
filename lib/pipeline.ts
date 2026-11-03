@@ -2,7 +2,7 @@
  * The agent pipeline: interview → (code validation) → draft → critic → revise → re-check.
  * Each stage is a separate, focused model call with its own prompt.
  */
-import { EFFORT, MAX_INTERVIEW_TURNS, todayInIsrael } from "./config";
+import { EFFORT, LIMITATION_YEARS, MAX_INTERVIEW_TURNS, SMALL_CLAIMS_CEILING_ILS, todayInIsrael } from "./config";
 import { checkDraft, type DraftIssue } from "./draftChecks";
 import { computeFieldStatuses } from "./fields";
 import { callStructured, callText, loadPrompt } from "./llm";
@@ -41,6 +41,9 @@ export type InterviewResult = InterviewState & {
 function caseStateBlock(state: InterviewState, validation: ValidationResult, today: string, userTurns: number) {
   const payload = {
     today,
+    // The validation below describes the case *before* this message; these let the model
+    // react to an amount or date given in this very message (the code re-validates after).
+    rules: { small_claims_ceiling_ils: SMALL_CLAIMS_CEILING_ILS, limitation_years: LIMITATION_YEARS },
     case_file: toModel(state.caseFile),
     unknown_fields: state.unknownFields,
     validation: {

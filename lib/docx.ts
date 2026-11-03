@@ -6,6 +6,8 @@ import { AlignmentType, Document, HeadingLevel, Packer, Paragraph, TextRun, Foot
 import { DISCLAIMER } from "./config";
 
 const FONT = "David";
+/** The "- נגד -" line between the parties (bare or bold). */
+const VERSUS = /^(\*\*)?-\s*נגד\s*-(\*\*)?$/;
 
 function runs(text: string, opts: { size?: number; bold?: boolean } = {}): TextRun[] {
   // **bold** segments
@@ -47,10 +49,10 @@ export async function markdownToDocx(md: string): Promise<Buffer> {
     } else if ((m = line.match(/^\s*(\d+)\.\s+(.*)/))) {
       // Numbered paragraphs keep their explicit number (numbering runs across sections).
       children.push(para(runs(`${m[1]}. ${m[2]}`), { indent: { right: 360, hanging: 360 } }));
-    } else if ((m = line.match(/^\s*[-*]\s+(.*)/)) && !/^-\s*נגד\s*-$/.test(line.trim())) {
-      children.push(para(runs(`• ${m[1]}`), { indent: { right: 360 } }));
-    } else if (/^-\s*נגד\s*-$/.test(line.trim())) {
+    } else if (VERSUS.test(line.trim())) {
       children.push(para(runs("- נגד -", { bold: true }), { alignment: AlignmentType.CENTER }));
+    } else if ((m = line.match(/^\s*[-*]\s+(.*)/))) {
+      children.push(para(runs(`• ${m[1]}`), { indent: { right: 360 } }));
     } else if (/^---+$/.test(line.trim())) {
       continue;
     } else {
