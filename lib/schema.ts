@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { ModelCaseFileSchema } from "./modelSchema";
 
 /**
  * "תיק התביעה" — the structured case file the interview fills in.
@@ -96,10 +97,11 @@ export type FieldKey = (typeof FIELD_KEYS)[number];
 
 /** What the interview model returns on every turn. */
 export const InterviewTurnSchema = z.object({
-  case_file: CaseFileSchema.describe("תיק התביעה המעודכן במלואו: הערכים הקודמים + מה שהמשתמש מסר עכשיו"),
+  case_file: ModelCaseFileSchema.describe("תיק התביעה המעודכן במלואו: הערכים הקודמים + מה שהמשתמש מסר עכשיו. \"\" = עדיין לא נמסר"),
+  // Plain strings (not z.enum) keep the compiled output grammar small; the code filters them to FIELD_KEYS.
   unknown_fields: z
-    .array(z.enum(FIELD_KEYS))
-    .describe("שדות שהמשתמש אמר במפורש שאינו יודע / אין לו. יסומנו [להשלמה] והשיחה תמשיך"),
+    .array(z.string())
+    .describe(`שדות שהמשתמש אמר במפורש שאינו יודע / אין לו, מתוך: ${FIELD_KEYS.join(", ")}. יסומנו [להשלמה] והשיחה תמשיך`),
   flags: z
     .array(
       z.object({
@@ -108,7 +110,6 @@ export const InterviewTurnSchema = z.object({
       }),
     )
     .describe("אירועים חריגים בתור הנוכחי"),
-  missing_fields: z.array(z.enum(FIELD_KEYS)).describe("שדות שעדיין חסרים, לפי סדר חשיבות"),
   next_questions: z.array(z.string()).describe("1–2 שאלות ממוקדות לשאול עכשיו"),
   assistant_message: z.string().describe("ההודעה שתוצג למשתמש בעברית: תגובה קצרה + השאלות הבאות"),
 });

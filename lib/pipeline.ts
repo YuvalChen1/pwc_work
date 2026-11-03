@@ -7,8 +7,10 @@ import { checkDraft, type DraftIssue } from "./draftChecks";
 import { computeFieldStatuses } from "./fields";
 import { callStructured, callText, loadPrompt } from "./llm";
 import { mergeCaseFile, mergeUnknown } from "./merge";
+import { fromModel, toModel } from "./modelSchema";
 import {
   CritiqueSchema,
+  FIELD_KEYS,
   InterviewTurnSchema,
   type CaseFile,
   type ChatMessage,
@@ -39,7 +41,7 @@ export type InterviewResult = InterviewState & {
 function caseStateBlock(state: InterviewState, validation: ValidationResult, today: string, userTurns: number) {
   const payload = {
     today,
-    case_file: state.caseFile,
+    case_file: toModel(state.caseFile),
     unknown_fields: state.unknownFields,
     validation: {
       issues: validation.issues,
@@ -78,8 +80,9 @@ export async function interviewTurn(messages: ChatMessage[], state: InterviewSta
   });
 
   // Code owns the state: merge defensively, then validate the merged result.
-  const caseFile = mergeCaseFile(state.caseFile, turn.case_file);
-  const unknownFields = mergeUnknown(caseFile, state.unknownFields, turn.unknown_fields);
+  const caseFile = mergeCaseFile(state.caseFile, fromModel(turn.case_file));
+  const reportedUnknown = turn.unknown_fields.filter((k): k is FieldKey => (FIELD_KEYS as readonly string[]).includes(k));
+  const unknownFields = mergeUnknown(caseFile, state.unknownFields, reportedUnknown);
   const validation = validateCase(caseFile, unknownFields, today);
 
   // "core_missing" is just the interview being in progress — not worth a notice.
