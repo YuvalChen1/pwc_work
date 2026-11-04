@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Scales of justice on a document: a small-claims statement of claim. -->
+  <rect width="64" height="64" rx="14" fill="#b6450e"/>
+  <path d="M17 8h22l10 10v38a2 2 0 0 1-2 2H17a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z" fill="#fff"/>
+  <path d="M39 8v8a2 2 0 0 0 2 2h8z" fill="#f2c9b0"/>
+  <g stroke="#b6450e" stroke-linecap="round" fill="none">
+    <path d="M32 21v26" stroke-width="3.5"/>
+    <path d="M21 26h22" stroke-width="3.5"/>
+    <path d="M21 26l-4.5 10M21 26l4.5 10M43 26l-4.5 10M43 26l4.5 10" stroke-width="1.8"/>
+  </g>
+  <g fill="#b6450e">
+    <circle cx="32" cy="20" r="3"/>
+    <path d="M15.5 36h11a5.5 5.5 0 0 1-11 0zM37.5 36h11a5.5 5.5 0 0 1-11 0z"/>
+    <rect x="24" y="46" width="16" height="4" rx="2"/>
+  </g>
+</svg>

@@ -264,7 +264,7 @@ export default function Home() {
                 />
                 {canVoice && (
                   <button className="btn mic" onClick={enterVoice} disabled={busy} title="שיחה קולית" aria-label="מעבר לשיחה קולית">
-                    🎤
+                    <img src="/mic.png" alt="" width={24} height={24} />
                   </button>
                 )}
                 <button className="btn primary" onClick={send} disabled={busy || !input.trim()}>שליחה</button>

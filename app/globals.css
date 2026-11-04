@@ -131,7 +131,8 @@ details summary { cursor: pointer; font-size: 13px; color: var(--muted); }
 }
 
 /* ── Voice mode ── */
-.composer .mic { padding: 8px 12px; font-size: 18px; line-height: 1; }
+.composer .mic { padding: 6px 10px; line-height: 0; display: inline-flex; align-items: center; justify-content: center; }
+.composer .mic img { display: block; }
 .voice { border-top: 1px solid var(--border); padding: 14px 12px 12px; display: flex; flex-direction: column; gap: 12px; }
 .voice-stage { display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; }
 .voice-orb {
