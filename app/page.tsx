@@ -3,11 +3,13 @@ import { useEffect, useRef, useState } from "react";
 import { CasePanel } from "@/components/CasePanel";
 import { DraftView } from "@/components/DraftView";
 import { QrButton } from "@/components/QrButton";
+import { VoiceMode } from "@/components/VoiceMode";
 import { DISCLAIMER, todayInIsrael } from "@/lib/config";
 import { computeFieldStatuses } from "@/lib/fields";
 import type { DraftResult, InterviewResult } from "@/lib/pipeline";
 import { emptyCaseFile, type CaseFile, type ChatMessage, type FieldKey } from "@/lib/schema";
 import { clearSession, loadSession, saveSession, type ChatItem } from "@/lib/session";
+import { unlockSpeech, voiceSupported } from "@/lib/speech";
 import { validateCase } from "@/lib/validate";
 
 const GREETING =
@@ -46,6 +48,8 @@ export default function Home() {
   const [restored, setRestored] = useState(false);
   // State, not a ref: saving must start only on the render *after* the restore has been applied.
   const [hydrated, setHydrated] = useState(false);
+  const [voiceMode, setVoiceMode] = useState(false);
+  const [canVoice, setCanVoice] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
 
   // Restore a saved session once, after mount (localStorage doesn't exist during server rendering).
@@ -69,6 +73,7 @@ export default function Home() {
       setRestored(restoredItems.length > 1 || !!s.draft);
     }
     setHydrated(true);
+    setCanVoice(voiceSupported());
   }, []);
 
   // Save on every change. A pristine session (greeting only, nothing typed) isn't worth keeping.
@@ -90,8 +95,10 @@ export default function Home() {
     setDraft(null);
     setView("chat");
     setRestored(false);
+    setVoiceMode(false);
   }
 
+  const lastAssistant = [...items].reverse().find((m): m is ChatMessage => m.role === "assistant")?.content ?? null;
   const validation = validateCase(caseFile, unknownFields, todayInIsrael());
   const fields = computeFieldStatuses(caseFile, unknownFields);
 
@@ -99,12 +106,11 @@ export default function Home() {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [items, busy]);
 
-  async function send() {
-    const text = input.trim();
-    if (!text || busy) return;
+  /** Runs one interview turn. Resolves to the agent's reply, or null on error (shown in the chat). */
+  async function submit(text: string, voice = false): Promise<string | null> {
+    if (!text || busy) return null;
     const next: ChatItem[] = [...items, { role: "user", content: text }];
     setItems(next);
-    setInput("");
     setBusy(true);
     setError(null);
     try {
@@ -112,7 +118,7 @@ export default function Home() {
       const res = await fetch("/api/interview", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages, caseFile, unknownFields, raisedIssueCodes }),
+        body: JSON.stringify({ messages, caseFile, unknownFields, raisedIssueCodes, voice }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "שגיאה");
@@ -125,19 +131,34 @@ export default function Home() {
         ...r.notices.map((issue) => ({ role: "notice" as const, issue })),
         { role: "assistant", content: r.assistantMessage },
       ]);
+      return r.assistantMessage;
     } catch (e) {
       setError(e instanceof Error ? e.message : "שגיאה");
       setItems((cur) => cur.slice(0, -1));
-      setInput(text);
+      if (!voice) setInput(text);
+      return null;
     } finally {
       setBusy(false);
     }
+  }
+
+  function send() {
+    const text = input.trim();
+    if (!text || busy) return;
+    setInput("");
+    submit(text);
+  }
+
+  function enterVoice() {
+    unlockSpeech(); // must run inside the click, for iOS
+    setVoiceMode(true);
   }
 
   async function makeDraft() {
     setDrafting(true);
     setError(null);
     setDraftStep(0);
+    setVoiceMode(false);
     setView("draft");
     // The server runs the four stages in one request; advance the indicator on a timer.
     const timer = setInterval(() => setDraftStep((s) => Math.min(s + 1, DRAFT_STEPS.length - 1)), 25_000);
@@ -218,24 +239,37 @@ export default function Home() {
               <div ref={endRef} />
             </div>
             {error && <div className="error" style={{ padding: "0 16px" }}>{error}</div>}
-            <div className="composer">
-              <textarea
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault();
-                    send();
-                  }
-                }}
-                placeholder="כתבו כאן…"
-                title="Enter לשליחה, Shift+Enter לשורה חדשה"
-                rows={1}
-                disabled={busy}
-                aria-label="הודעה"
+            {voiceMode ? (
+              <VoiceMode
+                greeting={lastAssistant}
+                onUtterance={(text) => submit(text, true)}
+                onExit={() => setVoiceMode(false)}
               />
-              <button className="btn primary" onClick={send} disabled={busy || !input.trim()}>שליחה</button>
-            </div>
+            ) : (
+              <div className="composer">
+                <textarea
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
+                      send();
+                    }
+                  }}
+                  placeholder="כתבו כאן…"
+                  title="Enter לשליחה, Shift+Enter לשורה חדשה"
+                  rows={1}
+                  disabled={busy}
+                  aria-label="הודעה"
+                />
+                {canVoice && (
+                  <button className="btn mic" onClick={enterVoice} disabled={busy} title="שיחה קולית" aria-label="מעבר לשיחה קולית">
+                    🎤
+                  </button>
+                )}
+                <button className="btn primary" onClick={send} disabled={busy || !input.trim()}>שליחה</button>
+              </div>
+            )}
           </section>
           <CasePanel fields={fields} validation={validation} onDraft={makeDraft} drafting={drafting} />
         </main>

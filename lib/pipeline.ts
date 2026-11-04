@@ -38,9 +38,11 @@ export type InterviewResult = InterviewState & {
   fields: ReturnType<typeof computeFieldStatuses>;
 };
 
-function caseStateBlock(state: InterviewState, validation: ValidationResult, today: string, userTurns: number) {
+function caseStateBlock(state: InterviewState, validation: ValidationResult, today: string, userTurns: number, voice: boolean) {
   const payload = {
     today,
+    // "voice": the reply is read aloud by the browser and the user answers by speaking (see the prompt).
+    reply_mode: voice ? "voice" : "text",
     // The validation below describes the case *before* this message; these let the model
     // react to an amount or date given in this very message (the code re-validates after).
     rules: { small_claims_ceiling_ils: SMALL_CLAIMS_CEILING_ILS, limitation_years: LIMITATION_YEARS },
@@ -60,7 +62,7 @@ function caseStateBlock(state: InterviewState, validation: ValidationResult, tod
   return `<case_state>\n${JSON.stringify(payload, null, 2)}\n</case_state>`;
 }
 
-export async function interviewTurn(messages: ChatMessage[], state: InterviewState): Promise<InterviewResult> {
+export async function interviewTurn(messages: ChatMessage[], state: InterviewState, opts: { voice?: boolean } = {}): Promise<InterviewResult> {
   const today = todayInIsrael();
   const before = validateCase(state.caseFile, state.unknownFields, today);
   const userTurns = messages.filter((m) => m.role === "user").length;
@@ -71,7 +73,7 @@ export async function interviewTurn(messages: ChatMessage[], state: InterviewSta
     ...messages.slice(0, -1).map((m) => ({ role: m.role, content: m.content })),
     {
       role: "user" as const,
-      content: `${caseStateBlock(state, before, today, userTurns)}\n\n<user_message>\n${last?.content ?? ""}\n</user_message>`,
+      content: `${caseStateBlock(state, before, today, userTurns, !!opts.voice)}\n\n<user_message>\n${last?.content ?? ""}\n</user_message>`,
     },
   ];
 
