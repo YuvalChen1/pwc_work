@@ -7,9 +7,8 @@ import { DISCLAIMER, todayInIsrael } from "@/lib/config";
 import { computeFieldStatuses } from "@/lib/fields";
 import type { DraftResult, InterviewResult } from "@/lib/pipeline";
 import { emptyCaseFile, type CaseFile, type ChatMessage, type FieldKey } from "@/lib/schema";
-import { validateCase, type ValidationIssue } from "@/lib/validate";
-
-type ChatItem = ChatMessage | { role: "notice"; issue: ValidationIssue };
+import { clearSession, loadSession, saveSession, type ChatItem } from "@/lib/session";
+import { validateCase } from "@/lib/validate";
 
 const GREETING =
   "שלום! אני אעזור לך להכין טיוטת כתב תביעה לבית המשפט לתביעות קטנות. אשאל כמה שאלות קצרות, אחת-שתיים בכל פעם, ובסוף אנסח טיוטה שתוכל/י לבדוק ולהשלים.\n\nספר/י לי בקצרה: מה קרה ומול מי?";
@@ -44,7 +43,54 @@ export default function Home() {
   const [draftStep, setDraftStep] = useState(0);
   const [draft, setDraft] = useState<DraftResult | null>(null);
   const [view, setView] = useState<"chat" | "draft">("chat");
+  const [restored, setRestored] = useState(false);
+  // State, not a ref: saving must start only on the render *after* the restore has been applied.
+  const [hydrated, setHydrated] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
+
+  // Restore a saved session once, after mount (localStorage doesn't exist during server rendering).
+  useEffect(() => {
+    const s = loadSession();
+    if (s) {
+      let restoredItems = s.items;
+      let restoredInput = s.input;
+      // The page was closed while waiting for a reply: put the unanswered message back in the box.
+      const last = restoredItems[restoredItems.length - 1];
+      if (last.role === "user") {
+        restoredItems = restoredItems.slice(0, -1);
+        restoredInput = restoredInput || last.content;
+      }
+      setItems(restoredItems);
+      setInput(restoredInput);
+      setCaseFile(s.caseFile);
+      setUnknownFields(s.unknownFields);
+      setRaisedIssueCodes(s.raisedIssueCodes);
+      setDraft(s.draft);
+      setRestored(restoredItems.length > 1 || !!s.draft);
+    }
+    setHydrated(true);
+  }, []);
+
+  // Save on every change. A pristine session (greeting only, nothing typed) isn't worth keeping.
+  useEffect(() => {
+    if (!hydrated) return;
+    if (items.length <= 1 && !input && !draft) return clearSession();
+    saveSession({ items, input, caseFile, unknownFields, raisedIssueCodes, draft });
+  }, [hydrated, items, input, caseFile, unknownFields, raisedIssueCodes, draft]);
+
+  function startOver() {
+    if (!window.confirm("להתחיל מחדש? השיחה, תיק התביעה והטיוטה יימחקו מהדפדפן.")) return;
+    clearSession();
+    setItems([{ role: "assistant", content: GREETING }]);
+    setInput("");
+    setError(null);
+    setCaseFile(emptyCaseFile());
+    setUnknownFields([]);
+    setRaisedIssueCodes([]);
+    setDraft(null);
+    setView("chat");
+    setRestored(false);
+  }
 
   const validation = validateCase(caseFile, unknownFields, todayInIsrael());
   const fields = computeFieldStatuses(caseFile, unknownFields);
@@ -122,10 +168,19 @@ export default function Home() {
         </div>
         <div className="topbar-actions">
           {draft && view === "chat" && <button className="btn" onClick={() => setView("draft")}>לטיוטה</button>}
+          {(items.length > 1 || draft) && !busy && !drafting && (
+            <button className="btn" onClick={startOver}>התחלה מחדש</button>
+          )}
           <QrButton />
         </div>
       </header>
       <div className="disclaimer" role="note">⚠️ {DISCLAIMER}</div>
+      {restored && (
+        <div className="restored" role="status">
+          <span>המשכנו מאיפה שהפסקת. השיחה נשמרת בדפדפן הזה בלבד, ל-7 ימים.</span>
+          <button className="link-btn" onClick={() => setRestored(false)} aria-label="סגירת ההודעה">✕</button>
+        </div>
+      )}
 
       {view === "draft" && draft && !drafting ? (
         <DraftView result={draft} onBack={() => setView("chat")} />
