@@ -4,6 +4,14 @@
 
 > ⚠️ **זו טיוטה ולא ייעוץ משפטי.** הדיסקליימר מוצג בכל מסך ומוטבע בכל קובץ מיוצא.
 
+<p align="center">
+  <a href="https://pwcwork-six.vercel.app"><img src="docs/qr.png" alt="קוד QR לאפליקציה" width="180"></a>
+  <br>
+  <b>🚀 <a href="https://pwcwork-six.vercel.app">נסו את האפליקציה: pwcwork-six.vercel.app</a></b>
+  <br>
+  <sub>סרקו מהטלפון או לחצו על הקישור. גם בתוך האפליקציה יש כפתור "📱 לנסות בטלפון" שמציג את הקוד.</sub>
+</p>
+
 נבנה כמשימת בית. הדגש הוא על **חשיבת סוכן**: איסוף מידע חסר, מבנה שיחה מוגדר, הנדסת פרומפטים, בקרת איכות על הפלט וטיפול במקרי קצה. המטרה לא הייתה לבנות עוזר משפטי מושלם.
 
 ---
@@ -152,6 +160,7 @@ npm run dev                     # http://localhost:3000
 | `npm run test:unit` | בדיקות יחידה לאימות בקוד, בלי API |
 | `npm run test:conversations` | שיחות הבדיקה האוטומטיות מול ה-API, שומר ל-`examples/` |
 | `npm run test:conversations -- a` | תרחיש אחד לפי קידומת ה-id |
+| `npm run qr` | יוצר מחדש את `docs/qr.png` לפי `PUBLIC_APP_URL` ב-`lib/config.ts` |
 
 ## פריסה ב-Vercel
 

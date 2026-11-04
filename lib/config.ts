@@ -48,3 +48,6 @@ export function todayInIsrael(): string {
     day: "2-digit",
   }).format(new Date());
 }
+
+/** The production deployment — used for the QR code in the README (scripts/make-qr.ts). */
+export const PUBLIC_APP_URL = "https://pwcwork-six.vercel.app";

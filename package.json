@@ -8,12 +8,14 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "test:unit": "node --import tsx scripts/unit-checks.ts",
-    "test:conversations": "node --import tsx scripts/run-scenarios.ts"
+    "test:conversations": "node --import tsx scripts/run-scenarios.ts",
+    "qr": "node --import tsx scripts/make-qr.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.4.0",
     "docx": "^9.15.2",
     "next": "^15.5.28",
+    "qrcode": "^1.5.4",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "react-markdown": "^10.1.0",
@@ -21,6 +23,7 @@
   },
   "devDependencies": {
     "@types/node": "^26.6.6",
+    "@types/qrcode": "^1.5.6",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "dotenv": "^18.0.9",

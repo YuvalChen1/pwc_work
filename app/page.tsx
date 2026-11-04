@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { CasePanel } from "@/components/CasePanel";
 import { DraftView } from "@/components/DraftView";
+import { QrButton } from "@/components/QrButton";
 import { DISCLAIMER, todayInIsrael } from "@/lib/config";
 import { computeFieldStatuses } from "@/lib/fields";
 import type { DraftResult, InterviewResult } from "@/lib/pipeline";
@@ -119,7 +120,10 @@ export default function Home() {
           <h1>טיוטת כתב תביעה — תביעות קטנות</h1>
           <div className="sub">ראיון קצר ← בדיקות אוטומטיות ← טיוטה ← בקרת איכות</div>
         </div>
-        {draft && view === "chat" && <button className="btn" onClick={() => setView("draft")}>לטיוטה</button>}
+        <div className="topbar-actions">
+          {draft && view === "chat" && <button className="btn" onClick={() => setView("draft")}>לטיוטה</button>}
+          <QrButton />
+        </div>
       </header>
       <div className="disclaimer" role="note">⚠️ {DISCLAIMER}</div>
 

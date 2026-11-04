@@ -30,6 +30,12 @@ textarea { font: inherit; }
 .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 20px; background: var(--surface); border-bottom: 1px solid var(--border); }
 .topbar h1 { font-size: 18px; margin: 0; }
 .topbar .sub { color: var(--muted); font-size: 13px; }
+.topbar-actions { display: flex; gap: 8px; flex: none; }
+.modal-backdrop { position: fixed; inset: 0; background: rgba(16, 24, 40, 0.45); display: grid; place-items: center; padding: 16px; z-index: 50; }
+.modal { background: var(--surface); border-radius: 14px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25); padding: 24px; width: min(340px, 100%); display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
+.modal h2 { font-size: 17px; margin: 0; }
+.modal img, .qr-placeholder { width: 240px; height: 240px; max-width: 100%; height: auto; aspect-ratio: 1; border-radius: 8px; background: var(--surface-2); }
+.modal a { color: var(--info); font-size: 14px; word-break: break-all; }
 .disclaimer { background: var(--warn-soft); color: #5c3d00; font-size: 13px; padding: 6px 20px; border-bottom: 1px solid #f1e0b5; }
 
 .main { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 16px; padding: 16px; }
