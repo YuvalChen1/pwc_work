@@ -1,10 +1,11 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { CasePanel } from "@/components/CasePanel";
+import { ConfirmDraft } from "@/components/ConfirmDraft";
 import { DraftView } from "@/components/DraftView";
 import { QrButton } from "@/components/QrButton";
 import { VoiceMode } from "@/components/VoiceMode";
-import { DISCLAIMER, todayInIsrael } from "@/lib/config";
+import { DISCLAIMER, MAX_MESSAGE_CHARS, todayInIsrael } from "@/lib/config";
 import { computeFieldStatuses } from "@/lib/fields";
 import type { DraftResult, InterviewResult } from "@/lib/pipeline";
 import { emptyCaseFile, type CaseFile, type ChatMessage, type FieldKey } from "@/lib/schema";
@@ -50,7 +51,9 @@ export default function Home() {
   const [hydrated, setHydrated] = useState(false);
   const [voiceMode, setVoiceMode] = useState(false);
   const [canVoice, setCanVoice] = useState(false);
+  const [confirming, setConfirming] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   // Restore a saved session once, after mount (localStorage doesn't exist during server rendering).
   useEffect(() => {
@@ -101,6 +104,9 @@ export default function Home() {
   const lastAssistant = [...items].reverse().find((m): m is ChatMessage => m.role === "assistant")?.content ?? null;
   const validation = validateCase(caseFile, unknownFields, todayInIsrael());
   const fields = computeFieldStatuses(caseFile, unknownFields);
+  const tooLong = input.length > MAX_MESSAGE_CHARS;
+  const tooLongMessage = (n: number) =>
+    `ההודעה ארוכה מדי (${n.toLocaleString("he-IL")} תווים, המקסימום ${MAX_MESSAGE_CHARS.toLocaleString("he-IL")}). אפשר לחלק אותה לכמה הודעות, או לסכם את העיקר.`;
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -109,6 +115,10 @@ export default function Home() {
   /** Runs one interview turn. Resolves to the agent's reply, or null on error (shown in the chat). */
   async function submit(text: string, voice = false): Promise<string | null> {
     if (!text || busy) return null;
+    if (text.length > MAX_MESSAGE_CHARS) {
+      setError(tooLongMessage(text.length));
+      return null;
+    }
     const next: ChatItem[] = [...items, { role: "user", content: text }];
     setItems(next);
     setBusy(true);
@@ -144,7 +154,7 @@ export default function Home() {
 
   function send() {
     const text = input.trim();
-    if (!text || busy) return;
+    if (!text || busy || text.length > MAX_MESSAGE_CHARS) return;
     setInput("");
     submit(text);
   }
@@ -248,6 +258,7 @@ export default function Home() {
             ) : (
               <div className="composer">
                 <textarea
+                  ref={inputRef}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => {
@@ -267,12 +278,31 @@ export default function Home() {
                     <img src="/mic.png" alt="" width={24} height={24} />
                   </button>
                 )}
-                <button className="btn primary" onClick={send} disabled={busy || !input.trim()}>שליחה</button>
+                <button className="btn primary" onClick={send} disabled={busy || !input.trim() || tooLong}>שליחה</button>
+              </div>
+            )}
+            {!voiceMode && input.length > MAX_MESSAGE_CHARS * 0.9 && (
+              <div className={`length-hint${tooLong ? " over" : ""}`} role={tooLong ? "alert" : undefined}>
+                {tooLong ? tooLongMessage(input.length) : `${input.length.toLocaleString("he-IL")} / ${MAX_MESSAGE_CHARS.toLocaleString("he-IL")} תווים`}
               </div>
             )}
           </section>
-          <CasePanel fields={fields} validation={validation} onDraft={makeDraft} drafting={drafting} />
+          <CasePanel fields={fields} validation={validation} onDraft={() => setConfirming(true)} drafting={drafting} />
         </main>
+      )}
+      {confirming && (
+        <ConfirmDraft
+          caseFile={caseFile}
+          fields={fields}
+          onConfirm={() => {
+            setConfirming(false);
+            makeDraft();
+          }}
+          onCancel={() => {
+            setConfirming(false);
+            setTimeout(() => inputRef.current?.focus(), 0);
+          }}
+        />
       )}
     </div>
   );

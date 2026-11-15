@@ -20,6 +20,24 @@ const REQUIRED_SECTIONS: [RegExp, string][] = [
   [/^##\s*ז\.\s/m, "פרק ז. הצהרה וחתימה"],
 ];
 
+/**
+ * The statutes the drafting prompt allows (prompts/draft.md, section ד) — keep the two in sync.
+ * Matched as a prefix, so "חוק החוזים" covers both (חלק כללי) and (תרופות בשל הפרת חוזה).
+ */
+export const ALLOWED_STATUTES = [
+  "חוק המכר",
+  "חוק החוזים",
+  "חוק הגנת הצרכן",
+  "חוק השכירות והשאילה",
+  "חוק עשיית עושר ולא במשפט",
+  "פקודת הנזיקין",
+];
+
+/** Normalizes Hebrew text for exact-form comparisons: quote marks / geresh / gershayim, dashes, spacing. */
+function norm(s: string) {
+  return s.replace(/["'״׳`]/g, "").replace(/[-–־]/g, " ").replace(/\s+/g, " ").trim();
+}
+
 function toIso(d: string, m: string, y: string) {
   return `${y}-${m.padStart(2, "0")}-${d.padStart(2, "0")}`;
 }
@@ -93,6 +111,27 @@ export function checkDraft(draft: string, c: CaseFile): DraftIssue[] {
   }
   if (c.defendant.registration_number && !draft.includes(c.defendant.registration_number)) {
     add({ category: "missing_placeholder", severity: "medium", quote: "", explanation: "מספר הזיהוי של הנתבע מהתיק אינו מופיע בטיוטה כפי שנמסר.", suggested_fix: `לציין ${c.defendant.registration_number}.` });
+  }
+
+  // 6. Known names must be copied as given (quote marks and dashes are ignored).
+  const normDraft = norm(draft);
+  const names: [string | null, string][] = [[c.plaintiff.full_name, "התובע"], [c.defendant.name, "הנתבע"]];
+  for (const [name, who] of names) {
+    if (name && !normDraft.includes(norm(name))) {
+      add({ category: "missing_placeholder", severity: "medium", quote: "", explanation: `שם ${who} כפי שמופיע בתיק ("${name}") אינו מופיע בטיוטה.`, suggested_fix: `לכתוב את שם ${who} בדיוק כך: ${name}.` });
+    }
+  }
+
+  // 7. Only statutes from the closed list may be cited. "כחוק" / "החוק" are not statute names,
+  //    so a match must not be preceded by a letter.
+  const flagged = new Set<string>();
+  for (const m of draft.matchAll(/(?<!\p{L})(?:חוק|פקודת)\s+\S+/gu)) {
+    const snippet = norm(draft.slice(m.index, m.index + 60));
+    if (ALLOWED_STATUTES.some((s) => snippet.startsWith(s))) continue;
+    const quote = draft.slice(m.index).split(/[,.(\n]/)[0].trim().slice(0, 60);
+    if (flagged.has(quote)) continue;
+    flagged.add(quote);
+    add({ category: "legal_overreach", severity: "medium", quote, explanation: `"${quote}" אינו ברשימת החוקים שהטיוטה רשאית לצטט.`, suggested_fix: `להסיר, או להחליף בחוק מהרשימה: ${ALLOWED_STATUTES.join(", ")}.` });
   }
 
   return issues;

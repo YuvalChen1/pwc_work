@@ -31,6 +31,9 @@ export const LIMITATION_YEARS = 7;
 /** מתחילים להזהיר כשנשארה פחות משנה עד ההתיישנות. */
 export const LIMITATION_WARNING_YEARS = 6;
 
+/** Longest chat message the server accepts; the chat box enforces the same limit with a clear message. */
+export const MAX_MESSAGE_CHARS = 8000;
+
 /** Max number of user turns before the agent pushes to wrap up. */
 export const MAX_INTERVIEW_TURNS = 25;
 

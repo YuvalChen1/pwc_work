@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { MAX_MESSAGE_CHARS } from "@/lib/config";
 import { ModelRefusalError } from "@/lib/llm";
 import { interviewTurn } from "@/lib/pipeline";
 import { CaseFileSchema, FIELD_KEYS } from "@/lib/schema";
@@ -8,7 +9,7 @@ export const runtime = "nodejs";
 export const maxDuration = 120;
 
 const BodySchema = z.object({
-  messages: z.array(z.object({ role: z.enum(["user", "assistant"]), content: z.string().max(8000) })).min(1).max(120),
+  messages: z.array(z.object({ role: z.enum(["user", "assistant"]), content: z.string().max(MAX_MESSAGE_CHARS) })).min(1).max(120),
   caseFile: CaseFileSchema,
   unknownFields: z.array(z.enum(FIELD_KEYS)),
   raisedIssueCodes: z.array(z.string()),

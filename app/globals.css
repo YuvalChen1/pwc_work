@@ -38,6 +38,20 @@ textarea { font: inherit; }
 .modal h2 { font-size: 17px; margin: 0; }
 .modal img, .qr-placeholder { width: 240px; height: 240px; max-width: 100%; height: auto; aspect-ratio: 1; border-radius: 8px; background: var(--surface-2); }
 .modal a { color: var(--info); font-size: 14px; word-break: break-all; }
+.modal.confirm { width: min(580px, 100%); max-height: calc(100dvh - 32px); overflow-y: auto; align-items: stretch; text-align: right; gap: 10px; }
+.modal.confirm .hint { margin: 0; }
+.confirm-facts { margin: 0; padding-inline-start: 22px; font-size: 14px; }
+.confirm-facts li + li { margin-top: 4px; }
+.confirm-list { margin: 4px 0 0; border-top: 1px solid var(--border); }
+.confirm-list > div { display: grid; grid-template-columns: 140px 1fr; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+.confirm-list dt { color: var(--muted); }
+.confirm-list dd { margin: 0; word-break: break-word; }
+.confirm-list dd.pending { color: var(--warn); }
+.confirm-actions { display: flex; gap: 8px; margin-top: 6px; }
+.confirm-actions .btn.primary { flex: 1; }
+.length-hint { padding: 0 16px 10px; font-size: 12.5px; color: var(--muted); }
+.length-hint.over { color: var(--bad); }
+@media (max-width: 520px) { .confirm-list > div { grid-template-columns: 1fr; gap: 0; } .confirm-actions { flex-direction: column; } }
 .disclaimer { background: var(--warn-soft); color: #5c3d00; font-size: 13px; padding: 6px 20px; border-bottom: 1px solid #f1e0b5; }
 
 .main { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 16px; padding: 16px; }

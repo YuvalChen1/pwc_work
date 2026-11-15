@@ -130,4 +130,27 @@ test("draft checks catch invented amounts, dates and attachments", () => {
   assert.ok(!issues.some((i) => i.category === "structure"));
 });
 
+test("draft checks: names must be copied as given (quote marks ignored)", () => {
+  const c = base(); // defendant: חשמל פלוס בע"מ
+  c.plaintiff.full_name = "דניאל כהן";
+  const ok = checkDraft(`התובע: דניאל כהן\nהנתבעת: חשמל פלוס בע״מ`, c);
+  assert.ok(!ok.some((i) => i.explanation.includes("שם ")));
+  const bad = checkDraft(`התובע: דניאל כהנא\nהנתבעת: חשמל פלוס`, c);
+  assert.ok(bad.some((i) => i.explanation.includes("שם התובע")));
+  assert.ok(bad.some((i) => i.explanation.includes("שם הנתבע")));
+});
+
+test("draft checks: only statutes from the closed list may be cited", () => {
+  const c = base();
+  const draft = [
+    `1. התובע יטען כי הנתבעת הפרה את חוק המכר, התשכ"ח-1968, ואת חוק החוזים (תרופות בשל הפרת חוזה), התשל"א-1970.`,
+    `2. וכן לפי חוק השכירות והשאילה, התשל"א-1971, ופקודת הנזיקין [נוסח חדש].`,
+    `3. בתוספת הפרשי הצמדה וריבית כחוק, כפי שקובע החוק.`,
+    `4. התביעה הוגשה בתוך התקופה שקובע חוק ההתיישנות, התשי"ח-1958.`,
+  ].join("\n");
+  const statuteIssues = checkDraft(draft, c).filter((i) => i.category === "legal_overreach");
+  assert.equal(statuteIssues.length, 1);
+  assert.ok(statuteIssues[0].quote.startsWith("חוק ההתיישנות"));
+});
+
 console.log(`\n${passed} passed`);

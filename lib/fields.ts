@@ -17,7 +17,7 @@ const fmtAmount = (n: number) => `${n.toLocaleString("he-IL")} ₪`;
 /** Order = order of importance; also the order the panel shows them. */
 export const FIELD_DEFS: FieldDef[] = [
   { key: "facts", label: "עובדות המקרה", group: "המקרה", required: true,
-    display: (c) => (c.facts.length ? `${c.facts.length} עובדות` : null) },
+    display: (c) => (c.facts.length ? (c.facts.length === 1 ? "עובדה אחת" : `${c.facts.length} עובדות`) : null) },
   { key: "defendant.name", label: "שם הנתבע", group: "הנתבע", required: true,
     display: (c) => c.defendant.name },
   { key: "amount.total", label: "סכום התביעה", group: "הסכום", required: true,
@@ -39,7 +39,7 @@ export const FIELD_DEFS: FieldDef[] = [
   { key: "amount.breakdown", label: "פירוט הסכום", group: "הסכום", required: true,
     display: (c) => (c.amount.breakdown.length ? c.amount.breakdown.map((b) => `${b.item}: ${fmtAmount(b.amount)}`).join(" · ") : null) },
   { key: "settlement.attempts", label: "ניסיונות יישוב", group: "יישוב הסכסוך", required: false,
-    display: (c) => (c.settlement.attempts.length ? `${c.settlement.attempts.length} פניות` : null) },
+    display: (c) => (c.settlement.attempts.length ? (c.settlement.attempts.length === 1 ? "פנייה אחת" : `${c.settlement.attempts.length} פניות`) : null) },
   { key: "settlement.demand_letter_sent", label: "מכתב התראה", group: "יישוב הסכסוך", required: true,
     display: (c) => (c.settlement.demand_letter_sent == null ? null : c.settlement.demand_letter_sent ? `נשלח${c.settlement.demand_letter_date ? ` (${c.settlement.demand_letter_date})` : ""}` : "לא נשלח") },
   { key: "evidence", label: "ראיות ומסמכים", group: "ראיות", required: true,
