@@ -26,6 +26,7 @@ Use exactly these parts, in this order:
    - services: חוק החוזים (חלק כללי), התשל"ג-1973 (duty of good faith); חוק החוזים (תרופות בשל הפרת חוזה), התשל"א-1970; חוק הגנת הצרכן, התשמ"א-1981 when relevant.
    - unjust enrichment (when money was kept with no right to it): חוק עשיית עושר ולא במשפט, התשל"ט-1979.
    - damages caused by negligence: פקודת הנזיקין [נוסח חדש].
+   When the case is one of the types above, always cite the statute that specifically governs that type (for a rental deposit: חוק השכירות והשאילה; for a defective product: חוק המכר) before any general ground such as breach of contract or unjust enrichment. Don't cite a statute whose type doesn't match the facts.
    Phrase it as the plaintiff's position ("התובע יטען כי…"), modestly. One to three numbered paragraphs.
 8. `## ה. הסעד המבוקש` — a numbered list of the amount components from `amount.breakdown` with their sums, the total, and the standard requests: to order the defendant to pay the total "בתוספת הפרשי הצמדה וריבית כחוק מיום הגשת התביעה ועד התשלום בפועל" and "הוצאות משפט". No new amounts. If there is no breakdown, the total alone.
 9. `## ו. רשימת נספחים` — a list `נספח א' — <document>`, `נספח ב' — …`, in the order they are first mentioned in the facts, containing **exactly** the documents in `evidence`. A document the plaintiff doesn't have in hand gets ` [להשלמה: יש להשיג ולצרף]`. If `evidence` is empty: `[להשלמה: יש לצרף מסמכים התומכים בתביעה, כגון קבלה או התכתבויות]`.

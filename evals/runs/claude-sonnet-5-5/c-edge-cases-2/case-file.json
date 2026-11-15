@@ -1,0 +1,70 @@
+{
+  "caseFile": {
+    "case_type": "services",
+    "plaintiff": {
+      "full_name": "אבי מזרחי",
+      "id_number": "311489512",
+      "address": "רחוב הגפן 3, באר שבע",
+      "phone": "050-1112233"
+    },
+    "defendant": {
+      "name": "יוסי ביטון",
+      "entity_type": "licensed_dealer",
+      "registration_number": null,
+      "address": null
+    },
+    "incident_date": "2018-03",
+    "timeline": [
+      {
+        "date": "2018-03",
+        "description": "הקבלן קיבל מהתובע מקדמה בסך 45,000 ש\"ח"
+      },
+      {
+        "date": "2018",
+        "description": "התובע פנה לקבלן בטלפון מספר פעמים, והקבלן הבטיח להחזיר את הכסף"
+      }
+    ],
+    "facts": [
+      "קבלן שיפוצים קיבל מהמשתמש מקדמה של 45,000 ש\"ח במרץ 2018",
+      "הקבלן לא ביצע עבודה",
+      "התובע החליט להקטין את התביעה ל-39,900 ש\"ח ולוותר על ההפרש",
+      "התובע פנה לקבלן בטלפון כמה פעמים ב-2018",
+      "הקבלן הבטיח להחזיר את הכסף ולא החזיר",
+      "התובע לא שלח מכתב התראה"
+    ],
+    "amount": {
+      "total": 39900,
+      "breakdown": [
+        {
+          "item": "החזר מקדמה (מוקטן לתקרת בית המשפט, בוויתור על ההפרש)",
+          "amount": 39900
+        }
+      ]
+    },
+    "settlement": {
+      "attempts": [
+        {
+          "date": "2018",
+          "method": "טלפון (מספר פעמים)",
+          "result": "הקבלן הבטיח להחזיר ולא החזיר"
+        }
+      ],
+      "demand_letter_sent": false,
+      "demand_letter_date": null
+    },
+    "evidence": [
+      {
+        "description": "הסכם בכתב יד",
+        "in_possession": true
+      },
+      {
+        "description": "צילום של הצ'ק",
+        "in_possession": true
+      }
+    ]
+  },
+  "unknownFields": [
+    "defendant.registration_number",
+    "defendant.address"
+  ]
+}

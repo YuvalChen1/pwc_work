@@ -8,6 +8,11 @@
  *
  * Run: npm run test:conversations            (all scenarios)
  *      npm run test:conversations -- a        (one scenario by id)
+ *
+ * Model comparison (consistency + cost), written to evals/ instead of examples/:
+ *   EVAL_MODELS=claude-opus-5-5,claude-sonnet-5-5 EVAL_REPEATS=3 EVAL_BUDGET=6 npm run test:conversations
+ * The simulated user always runs on EVAL_SIM_MODEL (default Sonnet), so only the agent changes between models.
+ * Every run (with its cost) is appended to evals/results.json, and EVAL_BUDGET caps the total across invocations.
  */
 import { config as loadEnv } from "dotenv";
 loadEnv({ path: ".env.local" });
@@ -18,9 +23,14 @@ import path from "node:path";
 import { MODEL } from "../lib/config";
 import { markdownToDocx } from "../lib/docx";
 import { FIELD_DEFS } from "../lib/fields";
-import { callText, loadPrompt } from "../lib/llm";
+import { callText, loadPrompt, setAgentModel } from "../lib/llm";
 import { generateDraft, interviewTurn, type DraftResult, type InterviewResult, type InterviewState } from "../lib/pipeline";
 import { emptyCaseFile, type ChatMessage } from "../lib/schema";
+import { BudgetExceededError, diff, setBudget, snapshot, type Tally } from "../lib/usage";
+
+/** The simulated user's model. Unset = same as the agent (the original behaviour). */
+let simModel: string | undefined;
+let agentModelName = MODEL;
 
 const GREETING = "שלום! אני אעזור לך להכין טיוטת כתב תביעה לבית המשפט לתביעות קטנות. ספר/י לי בקצרה: מה קרה ומול מי?";
 
@@ -137,6 +147,7 @@ async function simulateUser(persona: string, convo: ChatMessage[]): Promise<stri
     messages: msgs,
     effort: "low",
     maxTokens: 2000,
+    model: simModel,
   });
 }
 
@@ -144,16 +155,16 @@ function fieldsTable(r: InterviewResult) {
   return r.fields.map((f) => `| ${f.label} | ${f.status === "filled" ? "✅ מולא" : f.status === "unknown" ? "❔ לא ידוע" : "⬜ חסר"} | ${f.value ?? ""} |`).join("\n");
 }
 
-async function runScenario(s: Scenario) {
-  const outDir = path.join("examples", s.id);
+async function runScenario(s: Scenario, outDir = path.join("examples", s.id)) {
   mkdirSync(outDir, { recursive: true });
   const started = Date.now();
+  const before = snapshot();
   console.log(`\n▶ ${s.title}`);
 
   let state: InterviewState = { caseFile: emptyCaseFile(), unknownFields: [], raisedIssueCodes: [] };
   const convo: ChatMessage[] = [{ role: "assistant", content: GREETING }];
   const turns: InterviewResult[] = [];
-  const lines: string[] = [`# ${s.title}`, "", `מודל: \`${MODEL}\` · ${new Date().toISOString().slice(0, 10)}`, "", "---", "", `**🤖 סוכן:** ${GREETING}`, ""];
+  const lines: string[] = [`# ${s.title}`, "", `מודל: \`${agentModelName}\` · ${new Date().toISOString().slice(0, 10)}`, "", "---", "", `**🤖 סוכן:** ${GREETING}`, ""];
 
   let userMsg = s.opening;
   let result!: InterviewResult;
@@ -209,13 +220,87 @@ async function runScenario(s: Scenario) {
   writeFileSync(path.join(outDir, "transcript.md"), lines.join("\n"));
   writeFileSync(path.join(outDir, "case-file.json"), JSON.stringify({ caseFile: result.caseFile, unknownFields: result.unknownFields }, null, 2));
   for (const c of checks) console.log(`  ${c.pass ? "✓" : "✗"} ${c.name}`);
-  const summary = { id: s.id, title: s.title, turns: turns.length, checks, draft: !!draft };
+  const cost = diff(before, snapshot());
+  console.log(`  cost: $${cost.usd.toFixed(3)} (${cost.calls} calls, ${cost.input} in, ${cost.output} out, ${cost.cacheRead} cache-read)`);
+  const seconds = Math.round((Date.now() - started) / 1000);
+  const summary = { id: s.id, title: s.title, turns: turns.length, checks, draft: !!draft, cost, seconds };
   writeFileSync(path.join(outDir, "summary.json"), JSON.stringify(summary, null, 2));
   return summary;
 }
 
+type RunRecord = {
+  model: string;
+  simModel: string;
+  scenario: string;
+  repeat: number;
+  passed: number;
+  total: number;
+  failed: string[];
+  turns: number;
+  seconds: number;
+  cost: Tally;
+  error?: string;
+  at: string;
+};
+
+/** Model comparison mode: every scenario × every model × EVAL_REPEATS, with a shared spending cap. */
+async function evalMain(only: string | undefined) {
+  const models = process.env.EVAL_MODELS!.split(",").map((m) => m.trim()).filter(Boolean);
+  const repeats = Number(process.env.EVAL_REPEATS || 1);
+  const budget = process.env.EVAL_BUDGET ? Number(process.env.EVAL_BUDGET) : null;
+  simModel = process.env.EVAL_SIM_MODEL || "claude-sonnet-5-5";
+  const selected = SCENARIOS.filter((s) => !only || s.id.startsWith(only));
+
+  mkdirSync("evals", { recursive: true });
+  const resultsFile = path.join("evals", "results.json");
+  const records: RunRecord[] = existsSync(resultsFile) ? JSON.parse(readFileSync(resultsFile, "utf8")) : [];
+  const spentBefore = records.reduce((sum, r) => sum + r.cost.usd, 0);
+  setBudget(budget, spentBefore);
+  console.log(`Models: ${models.join(", ")} · repeats: ${repeats} · simulated user: ${simModel} · spent so far: $${spentBefore.toFixed(2)}${budget != null ? ` of $${budget}` : ""}`);
+
+  // Repeat in the outer loop, so a budget stop still leaves every model with the same number of runs.
+  outer: for (let r = 1; r <= repeats; r++) {
+    for (const model of models) {
+      setAgentModel(model);
+      agentModelName = model;
+      for (const s of selected) {
+        const n = records.filter((x) => x.model === model && x.scenario === s.id).length + 1;
+        const outDir = path.join("evals", "runs", model, `${s.id}-${n}`);
+        const before = snapshot();
+        const at = new Date().toISOString();
+        try {
+          const sum = await runScenario(s, outDir);
+          records.push({ model, simModel, scenario: s.id, repeat: n, passed: sum.checks.filter((c) => c.pass).length, total: sum.checks.length, failed: sum.checks.filter((c) => !c.pass).map((c) => c.name), turns: sum.turns, seconds: sum.seconds, cost: sum.cost, at });
+        } catch (e) {
+          const cost = diff(before, snapshot());
+          const budgetStop = e instanceof BudgetExceededError;
+          console.log(`  ${budgetStop ? "■ budget reached" : "✗ run failed"}: ${(e as Error).message}`);
+          // A run cut off by the budget is not a result, but its spending still counts.
+          records.push({ model, simModel, scenario: s.id, repeat: n, passed: 0, total: 0, failed: [], turns: 0, seconds: 0, cost, error: budgetStop ? "budget" : (e as Error).message, at });
+          if (budgetStop) {
+            writeFileSync(resultsFile, JSON.stringify(records, null, 2));
+            break outer;
+          }
+        }
+        writeFileSync(resultsFile, JSON.stringify(records, null, 2));
+      }
+    }
+  }
+
+  const spent = records.reduce((sum, r) => sum + r.cost.usd, 0);
+  console.log(`\nTotal spent: $${spent.toFixed(2)}`);
+  for (const model of [...new Set(records.map((r) => r.model))]) {
+    const done = records.filter((r) => r.model === model && !r.error);
+    const passed = done.reduce((a, r) => a + r.passed, 0);
+    const total = done.reduce((a, r) => a + r.total, 0);
+    const usd = done.reduce((a, r) => a + r.cost.usd, 0);
+    console.log(`${model}: ${done.length} runs · ${passed}/${total} checks · avg $${(usd / Math.max(done.length, 1)).toFixed(3)} per run`);
+  }
+}
+
 async function main() {
   const only = process.argv[2];
+  if (process.env.EVAL_MODELS) return evalMain(only);
   const selected = SCENARIOS.filter((s) => !only || s.id.startsWith(only));
   const summaries = [];
   for (const s of selected) summaries.push(await runScenario(s));

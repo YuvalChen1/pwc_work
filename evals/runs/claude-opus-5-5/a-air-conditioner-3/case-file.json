@@ -1,0 +1,84 @@
+{
+  "caseFile": {
+    "case_type": "consumer_purchase",
+    "plaintiff": {
+      "full_name": "דניאל כהן",
+      "id_number": "304567894",
+      "address": "רחוב הרצל 12, רמת גן",
+      "phone": "052-3456789"
+    },
+    "defendant": {
+      "name": "חשמל פלוס בע\"מ",
+      "entity_type": "company",
+      "registration_number": null,
+      "address": "דרך בגין 100, תל אביב"
+    },
+    "incident_date": "2026-09-14",
+    "timeline": [
+      {
+        "date": "2026-09-14",
+        "description": "רכישת מזגן בחנות \"חשמל פלוס\" (חשמל פלוס בע\"מ) ב-3,200 ₪"
+      },
+      {
+        "date": null,
+        "description": "התקנת המזגן על ידי החנות, באותו שבוע של הרכישה"
+      },
+      {
+        "date": null,
+        "description": "המזגן התקלקל, שבועיים לאחר הרכישה"
+      },
+      {
+        "date": null,
+        "description": "פנייה לחנות 3 פעמים; החנות מסרבת להחזיר כסף או לתקן"
+      }
+    ],
+    "facts": [
+      "התובע/ת קנה/תה מזגן בחנות \"חשמל פלוס\" ב-14.9.2026.",
+      "השם על הקבלה הוא \"חשמל פלוס בע\"מ\".",
+      "המזגן נקנה לשימוש ביתי.",
+      "המחיר ששולם עבור המזגן היה 3,200 ₪.",
+      "ההתקנה נעשתה על ידי החנות באותו שבוע של הרכישה.",
+      "המזגן התקלקל אחרי שבועיים.",
+      "התובע/ת פנה/תה לחנות 3 פעמים.",
+      "החנות מסרבת להחזיר את הכסף או לתקן את המזגן.",
+      "לא נשלח לחנות מכתב התראה רשמי."
+    ],
+    "amount": {
+      "total": 3200,
+      "breakdown": [
+        {
+          "item": "החזר המחיר ששולם עבור המזגן",
+          "amount": 3200
+        }
+      ]
+    },
+    "settlement": {
+      "attempts": [
+        {
+          "date": null,
+          "method": "פנייה לחנות (3 פעמים)",
+          "result": "החנות סירבה להחזיר כסף או לתקן"
+        }
+      ],
+      "demand_letter_sent": false,
+      "demand_letter_date": null
+    },
+    "evidence": [
+      {
+        "description": "קבלה על רכישת המזגן",
+        "in_possession": true
+      },
+      {
+        "description": "תעודת אחריות למזגן",
+        "in_possession": true
+      },
+      {
+        "description": "צילומי מסך של הודעות וואטסאפ עם החנות",
+        "in_possession": true
+      }
+    ]
+  },
+  "unknownFields": [
+    "defendant.registration_number"
+  ]
+}

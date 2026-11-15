@@ -1,0 +1,74 @@
+{
+  "caseFile": {
+    "case_type": "consumer_purchase",
+    "plaintiff": {
+      "full_name": "דניאל כהן",
+      "id_number": "304567894",
+      "address": "רחוב הרצל 12, רמת גן",
+      "phone": "052-3456789"
+    },
+    "defendant": {
+      "name": "חשמל פלוס בע\"מ",
+      "entity_type": "company",
+      "registration_number": null,
+      "address": "דרך בגין 100, תל אביב"
+    },
+    "incident_date": "2026-09-14",
+    "timeline": [
+      {
+        "date": "2026-09-14",
+        "description": "קניית מזגן בחנות X (שם על השלט: חשמל פלוס; שם על הקבלה: חשמל פלוס בע\"מ)"
+      },
+      {
+        "date": null,
+        "description": "המזגן התקלקל כשבועיים לאחר הקנייה"
+      },
+      {
+        "date": null,
+        "description": "פנייה לחנות 3 פעמים; החנות מסרבת להחזיר כסף או לתקן"
+      }
+    ],
+    "facts": [
+      "נקנה מזגן בחנות חשמל פלוס בסכום 3,200 ₪ בתאריך 14.9.2026",
+      "המזגן התקלקל כשבועיים לאחר הקנייה",
+      "פניתי לחנות 3 פעמים והם מסרבים להחזיר כסף או לתקן"
+    ],
+    "amount": {
+      "total": 3200,
+      "breakdown": [
+        {
+          "item": "מחיר המזגן",
+          "amount": 3200
+        }
+      ]
+    },
+    "settlement": {
+      "attempts": [
+        {
+          "date": null,
+          "method": "פניות לחנות (3 פעמים)",
+          "result": "החנות מסרבת להחזיר כסף או לתקן"
+        }
+      ],
+      "demand_letter_sent": false,
+      "demand_letter_date": null
+    },
+    "evidence": [
+      {
+        "description": "קבלה על רכישת המזגן",
+        "in_possession": true
+      },
+      {
+        "description": "תעודת אחריות",
+        "in_possession": true
+      },
+      {
+        "description": "צילומי מסך של שיחות וואטסאפ עם החנות",
+        "in_possession": true
+      }
+    ]
+  },
+  "unknownFields": [
+    "defendant.registration_number"
+  ]
+}

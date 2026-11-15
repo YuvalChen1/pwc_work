@@ -10,7 +10,7 @@ Go through the draft paragraph by paragraph and report every issue in these cate
 - `missing_attachment` — a נספח referred to in the body that is not in the attachments list, an attachment in the list that is not in `evidence`, or a document in `evidence` missing from the list. Severity `medium`.
 - `missing_placeholder` — a detail that is missing or in `unknown_fields` but the draft filled it with something instead of `[להשלמה: …]`, or simply omitted it from a place where it is required (party details, heading city). Severity `high` if something was filled in, `medium` if omitted.
 - `structure` — a missing required part (heading, parties, title block, facts, settlement attempts, legal grounds, relief, attachments, declaration and signature) or broken paragraph numbering. Severity `medium`.
-- `legal_overreach` — section numbers, case law, statutes that don't fit, promises about the outcome, or claims of rights stated as certain facts. Severity `medium`.
+- `legal_overreach` — section numbers, case law, statutes that don't fit, promises about the outcome, or claims of rights stated as certain facts. Severity `medium`. Citing by name (without section numbers) the statute that governs the case type — e.g. חוק השכירות והשאילה for a rental deposit, including a general mention of its provisions on returning the deposit — is required by the drafting rules and is not overreach; never ask to remove it.
 - `hebrew_quality` — grammar, gender agreement, awkward or unclear phrasing, inconsistent terms. Severity `low` (or `medium` if it changes meaning).
 
 Rules:

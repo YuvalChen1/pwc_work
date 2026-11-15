@@ -5,6 +5,16 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import type { z } from "zod";
 import { MODEL } from "./config";
+import { checkBudget, recordUsage } from "./usage";
+
+/**
+ * The agent's model. The evaluation script switches it per run (setAgentModel);
+ * the app always uses MODEL from config.
+ */
+let agentModel = MODEL;
+export function setAgentModel(model: string) {
+  agentModel = model;
+}
 
 /** The API key is read here only, server-side (env ANTHROPIC_API_KEY). */
 let client: Anthropic | null = null;
@@ -34,11 +44,14 @@ type Effort = "low" | "medium" | "high" | "xhigh" | "max";
  *   Anthropic's recommended fallback model instead of returning a refusal.
  * - the system prompt is cached (it is identical across turns).
  */
-function baseParams(system: string, effort: Effort) {
+function baseParams(system: string, effort: Effort, model = agentModel) {
+  checkBudget();
   return {
-    model: MODEL,
-    betas: ["server-side-fallback-2026-07-01"],
-    fallbacks: "default" as const,
+    model,
+    // Haiku has no server-side fallback, so the parameter is sent only to the models that support it.
+    ...(model.startsWith("claude-haiku")
+      ? {}
+      : { betas: ["server-side-fallback-2026-07-01"], fallbacks: "default" as const }),
     system: [{ type: "text" as const, text: system, cache_control: { type: "ephemeral" as const } }],
     output_config: { effort },
   };
@@ -61,6 +74,7 @@ export async function callStructured<T extends z.ZodType>(opts: {
     messages: opts.messages,
     output_config: { ...base.output_config, format: betaZodOutputFormat(opts.schema) },
   });
+  recordUsage(res.model, res.usage);
   if (res.stop_reason === "refusal") throw new ModelRefusalError("The model declined this request.");
   if (res.stop_reason === "max_tokens") throw new Error("The model response was cut off (max_tokens).");
   if (res.parsed_output == null) throw new Error("The model did not return valid structured output.");
@@ -73,13 +87,16 @@ export async function callText(opts: {
   messages: Anthropic.Beta.BetaMessageParam[];
   effort: Effort;
   maxTokens?: number;
+  /** Overrides the agent model (used by the simulated user in the evaluation script). */
+  model?: string;
 }): Promise<string> {
   const stream = getClient().beta.messages.stream({
-    ...baseParams(opts.system, opts.effort),
+    ...baseParams(opts.system, opts.effort, opts.model),
     max_tokens: opts.maxTokens ?? 32000,
     messages: opts.messages,
   });
   const res = await stream.finalMessage();
+  recordUsage(res.model, res.usage);
   if (res.stop_reason === "refusal") throw new ModelRefusalError("The model declined this request.");
   if (res.stop_reason === "max_tokens") throw new Error("The model response was cut off (max_tokens).");
   return res.content

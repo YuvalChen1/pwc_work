@@ -1,0 +1,677 @@
+[
+  {
+    "model": "claude-haiku-5-5",
+    "simModel": "claude-sonnet-5-5",
+    "scenario": "a-air-conditioner",
+    "repeat": 1,
+    "passed": 12,
+    "total": 12,
+    "failed": [],
+    "turns": 12,
+    "seconds": 186,
+    "cost": {
+      "calls": 27,
+      "input": 63388,
+      "output": 38208,
+      "cacheWrite": 12824,
+      "cacheRead": 94295,
+      "usd": 0.069894375
+    },
+    "at": "2026-11-15T11:44:42.135Z"
+  },
+  {
+    "model": "claude-haiku-5-5",
+    "simModel": "claude-sonnet-5-5",
+    "scenario": "b-rental-deposit",
+    "repeat": 1,
+    "passed": 8,
+    "total": 9,
+    "failed": [
+      "הטיוטה מזכירה את חוק השכירות והשאילה"
+    ],
+    "turns": 10,
+    "seconds": 150,
+    "cost": {
+      "calls": 23,
+      "input": 50955,
+      "output": 32116,
+      "cacheWrite": 1090,
+      "cacheRead": 90094,
+      "usd": 0.057708440000000014
+    },
+    "at": "2026-11-15T11:47:48.284Z"
+  },
+  {
+    "model": "claude-haiku-5-5",
+    "simModel": "claude-sonnet-5-5",
+    "scenario": "c-edge-cases",
+    "repeat": 1,
+    "passed": 7,
+    "total": 7,
+    "failed": [],
+    "turns": 8,
+    "seconds": 48,
+    "cost": {
+      "calls": 15,
+      "input": 25635,
+      "output": 7600,
+      "cacheWrite": 819,
+      "cacheRead": 64994,
+      "usd": 0.030209400000000025
+    },
+    "at": "2026-11-15T11:50:18.591Z"
+  },
+  {
+    "model": "claude-sonnet-5-5",
+    "simModel": "claude-sonnet-5-5",
+    "scenario": "a-air-conditioner",
+    "repeat": 1,
+    "passed": 12,
+    "total": 12,
+    "failed": [],
+    "turns": 5,
+    "seconds": 91,
+    "cost": {
+      "calls": 13,
+      "input": 25860,
+      "output": 12695,
+      "cacheWrite": 12824,
+      "cacheRead": 34900,
+      "usd": 0.21421999999999997
+    },
+    "at": "2026-11-15T11:51:06.776Z"
+  },
+  {
+    "model": "claude-sonnet-5-5",
+    "simModel": "claude-sonnet-5-5",
+    "scenario": "b-rental-deposit",
+    "repeat": 1,
+    "passed": 8,
+    "total": 9,
+    "failed": [
+      "הטיוטה מזכירה את חוק השכירות והשאילה"
+    ],
+    "turns": 6,
+    "seconds": 115,
+    "cost": {
+      "calls": 15,
+      "input": 28817,
+      "output": 15758,
+      "cacheWrite": 0,
+      "cacheRead": 56784,
+      "usd": 0.22089240000000004
+    },
+    "at": "2026-11-15T11:52:37.707Z"
+  },
+  {
+    "model": "claude-sonnet-5-5",
+    "simModel": "claude-sonnet-5-5",
+    "scenario": "c-edge-cases",
+    "repeat": 1,
+    "passed": 7,
+    "total": 7,
+    "failed": [],
+    "turns": 5,
+    "seconds": 38,
+    "cost": {
+      "calls": 9,
+      "input": 15250,
+      "output": 4850,
+      "cacheWrite": 0,
+      "cacheRead": 40826,
+      "usd": 0.0830826
+    },
+    "at": "2026-11-15T11:54:33.159Z"
+  },
+  {
+    "model": "claude-opus-5-5",
+    "simModel": "claude-sonnet-5-5",
+    "scenario": "a-air-conditioner",
+    "repeat": 1,
+    "passed": 12,
+    "total": 12,
+    "failed": [],
+    "turns": 5,
+    "seconds": 143,
+    "cost": {
+      "calls": 13,
+      "input": 27471,
+      "output": 15719,
+      "cacheWrite": 11849,
+      "cacheRead": 35875,
+      "usd": 0.47687999999999997
+    },
+    "at": "2026-11-15T11:55:11.223Z"
+  },
+  {
+    "model": "claude-opus-5-5",
+    "simModel": "claude-sonnet-5-5",
+    "scenario": "b-rental-deposit",
+    "repeat": 1,
+    "passed": 9,
+    "total": 9,
+    "failed": [],
+    "turns": 6,
+    "seconds": 158,
+    "cost": {
+      "calls": 15,
+      "input": 31248,
+      "output": 17213,
+      "cacheWrite": 0,
+      "cacheRead": 56784,
+      "usd": 0.4632498000000005
+    },
+    "at": "2026-11-15T11:57:33.914Z"
+  },
+  {
+    "model": "claude-opus-5-5",
+    "simModel": "claude-sonnet-5-5",
+    "scenario": "c-edge-cases",
+    "repeat": 1,
+    "passed": 7,
+    "total": 7,
+    "failed": [],
+    "turns": 6,
+    "seconds": 86,
+    "cost": {
+      "calls": 11,
+      "input": 22292,
+      "output": 6924,
+      "cacheWrite": 819,
+      "cacheRead": 48336,
+      "usd": 0.21983909999999995
+    },
+    "at": "2026-11-15T12:00:12.138Z"
+  },
+  {
+    "model": "claude-haiku-5-5",
+    "simModel": "claude-sonnet-5-5",
+    "scenario": "a-air-conditioner",
+    "repeat": 2,
+    "passed": 12,
+    "total": 12,
+    "failed": [],
+    "turns": 13,
+    "seconds": 187,
+    "cost": {
+      "calls": 29,
+      "input": 75537,
+      "output": 41812,
+      "cacheWrite": 12824,
+      "cacheRead": 102780,
+      "usd": 0.08143817500000002
+    },
+    "at": "2026-11-15T12:01:58.335Z"
+  },
+  {
+    "model": "claude-haiku-5-5",
+    "simModel": "claude-sonnet-5-5",
+    "scenario": "b-rental-deposit",
+    "repeat": 2,
+    "passed": 7,
+    "total": 9,
+    "failed": [
+      "בקשת ההמצאה סומנה כ-fabrication_request",
+      "הטיוטה מזכירה את חוק השכירות והשאילה"
+    ],
+    "turns": 6,
+    "seconds": 115,
+    "cost": {
+      "calls": 15,
+      "input": 24196,
+      "output": 25235,
+      "cacheWrite": 1090,
+      "cacheRead": 55694,
+      "usd": 0.030014540000000006
+    },
+    "at": "2026-11-15T12:05:05.107Z"
+  },
+  {
+    "model": "claude-haiku-5-5",
+    "simModel": "claude-sonnet-5-5",
+    "scenario": "c-edge-cases",
+    "repeat": 2,
+    "passed": 6,
+    "total": 7,
+    "failed": [
+      "השאלה הלא רלוונטית סומנה off_topic"
+    ],
+    "turns": 8,
+    "seconds": 43,
+    "cost": {
+      "calls": 15,
+      "input": 26148,
+      "output": 6897,
+      "cacheWrite": 819,
+      "cacheRead": 64994,
+      "usd": 0.028313200000000024
+    },
+    "at": "2026-11-15T12:07:00.441Z"
+  },
+  {
+    "model": "claude-sonnet-5-5",
+    "simModel": "claude-sonnet-5-5",
+    "scenario": "a-air-conditioner",
+    "repeat": 2,
+    "passed": 12,
+    "total": 12,
+    "failed": [],
+    "turns": 4,
+    "seconds": 94,
+    "cost": {
+      "calls": 11,
+      "input": 20882,
+      "output": 12942,
+      "cacheWrite": 11849,
+      "cacheRead": 27390,
+      "usd": 0.20354550000000002
+    },
+    "at": "2026-11-15T12:07:43.601Z"
+  },
+  {
+    "model": "claude-sonnet-5-5",
+    "simModel": "claude-sonnet-5-5",
+    "scenario": "b-rental-deposit",
+    "repeat": 2,
+    "passed": 8,
+    "total": 9,
+    "failed": [
+      "הטיוטה מזכירה את חוק השכירות והשאילה"
+    ],
+    "turns": 8,
+    "seconds": 147,
+    "cost": {
+      "calls": 19,
+      "input": 42091,
+      "output": 20918,
+      "cacheWrite": 0,
+      "cacheRead": 73984,
+      "usd": 0.30076040000000004
+    },
+    "at": "2026-11-15T12:09:17.392Z"
+  },
+  {
+    "model": "claude-sonnet-5-5",
+    "simModel": "claude-sonnet-5-5",
+    "scenario": "c-edge-cases",
+    "repeat": 2,
+    "passed": 7,
+    "total": 7,
+    "failed": [],
+    "turns": 5,
+    "seconds": 36,
+    "cost": {
+      "calls": 9,
+      "input": 13475,
+      "output": 4245,
+      "cacheWrite": 0,
+      "cacheRead": 40826,
+      "usd": 0.07348260000000018
+    },
+    "at": "2026-11-15T12:11:44.376Z"
+  },
+  {
+    "model": "claude-opus-5-5",
+    "simModel": "claude-sonnet-5-5",
+    "scenario": "a-air-conditioner",
+    "repeat": 2,
+    "passed": 12,
+    "total": 12,
+    "failed": [],
+    "turns": 5,
+    "seconds": 127,
+    "cost": {
+      "calls": 13,
+      "input": 25903,
+      "output": 13918,
+      "cacheWrite": 11849,
+      "cacheRead": 35875,
+      "usd": 0.43667199999999984
+    },
+    "at": "2026-11-15T12:12:20.222Z"
+  },
+  {
+    "model": "claude-opus-5-5",
+    "simModel": "claude-sonnet-5-5",
+    "scenario": "b-rental-deposit",
+    "repeat": 2,
+    "passed": 9,
+    "total": 9,
+    "failed": [],
+    "turns": 7,
+    "seconds": 170,
+    "cost": {
+      "calls": 17,
+      "input": 37078,
+      "output": 18397,
+      "cacheWrite": 0,
+      "cacheRead": 65384,
+      "usd": 0.5071307999999997
+    },
+    "at": "2026-11-15T12:14:27.713Z"
+  },
+  {
+    "model": "claude-opus-5-5",
+    "simModel": "claude-sonnet-5-5",
+    "scenario": "c-edge-cases",
+    "repeat": 2,
+    "passed": 7,
+    "total": 7,
+    "failed": [],
+    "turns": 5,
+    "seconds": 58,
+    "cost": {
+      "calls": 9,
+      "input": 15508,
+      "output": 5933,
+      "cacheWrite": 819,
+      "cacheRead": 40007,
+      "usd": 0.1762092000000004
+    },
+    "at": "2026-11-15T12:17:18.194Z"
+  },
+  {
+    "model": "claude-haiku-5-5",
+    "simModel": "claude-sonnet-5-5",
+    "scenario": "a-air-conditioner",
+    "repeat": 3,
+    "passed": 12,
+    "total": 12,
+    "failed": [],
+    "turns": 8,
+    "seconds": 119,
+    "cost": {
+      "calls": 19,
+      "input": 36824,
+      "output": 25609,
+      "cacheWrite": 12824,
+      "cacheRead": 60355,
+      "usd": 0.042783274999999676
+    },
+    "at": "2026-11-15T12:18:15.905Z"
+  },
+  {
+    "model": "claude-haiku-5-5",
+    "simModel": "claude-sonnet-5-5",
+    "scenario": "b-rental-deposit",
+    "repeat": 3,
+    "passed": 9,
+    "total": 9,
+    "failed": [],
+    "turns": 8,
+    "seconds": 154,
+    "cost": {
+      "calls": 19,
+      "input": 39377,
+      "output": 33388,
+      "cacheWrite": 0,
+      "cacheRead": 73984,
+      "usd": 0.043020939999999674
+    },
+    "at": "2026-11-15T12:20:14.514Z"
+  },
+  {
+    "model": "claude-haiku-5-5",
+    "simModel": "claude-sonnet-5-5",
+    "scenario": "c-edge-cases",
+    "repeat": 3,
+    "passed": 6,
+    "total": 7,
+    "failed": [
+      "השאלה הלא רלוונטית סומנה off_topic"
+    ],
+    "turns": 8,
+    "seconds": 48,
+    "cost": {
+      "calls": 15,
+      "input": 25990,
+      "output": 7920,
+      "cacheWrite": 0,
+      "cacheRead": 65813,
+      "usd": 0.026605800000000013
+    },
+    "at": "2026-11-15T12:22:48.845Z"
+  },
+  {
+    "model": "claude-sonnet-5-5",
+    "simModel": "claude-sonnet-5-5",
+    "scenario": "a-air-conditioner",
+    "repeat": 3,
+    "passed": 12,
+    "total": 12,
+    "failed": [],
+    "turns": 4,
+    "seconds": 102,
+    "cost": {
+      "calls": 11,
+      "input": 22633,
+      "output": 14293,
+      "cacheWrite": 11849,
+      "cacheRead": 27390,
+      "usd": 0.22055749999999996
+    },
+    "at": "2026-11-15T12:23:36.705Z"
+  },
+  {
+    "model": "claude-sonnet-5-5",
+    "simModel": "claude-sonnet-5-5",
+    "scenario": "b-rental-deposit",
+    "repeat": 3,
+    "passed": 9,
+    "total": 9,
+    "failed": [],
+    "turns": 5,
+    "seconds": 97,
+    "cost": {
+      "calls": 13,
+      "input": 26452,
+      "output": 14038,
+      "cacheWrite": 0,
+      "cacheRead": 48184,
+      "usd": 0.19810239999999935
+    },
+    "at": "2026-11-15T12:25:18.747Z"
+  },
+  {
+    "model": "claude-sonnet-5-5",
+    "simModel": "claude-sonnet-5-5",
+    "scenario": "c-edge-cases",
+    "repeat": 3,
+    "passed": 7,
+    "total": 7,
+    "failed": [],
+    "turns": 6,
+    "seconds": 48,
+    "cost": {
+      "calls": 11,
+      "input": 21155,
+      "output": 6093,
+      "cacheWrite": 0,
+      "cacheRead": 49155,
+      "usd": 0.10815550000000007
+    },
+    "at": "2026-11-15T12:26:56.184Z"
+  },
+  {
+    "model": "claude-opus-5-5",
+    "simModel": "claude-sonnet-5-5",
+    "scenario": "a-air-conditioner",
+    "repeat": 3,
+    "passed": 12,
+    "total": 12,
+    "failed": [],
+    "turns": 5,
+    "seconds": 102,
+    "cost": {
+      "calls": 11,
+      "input": 18786,
+      "output": 11224,
+      "cacheWrite": 11849,
+      "cacheRead": 33940,
+      "usd": 0.3539990000000004
+    },
+    "at": "2026-11-15T12:27:44.257Z"
+  },
+  {
+    "model": "claude-opus-5-5",
+    "simModel": "claude-sonnet-5-5",
+    "scenario": "b-rental-deposit",
+    "repeat": 3,
+    "passed": 9,
+    "total": 9,
+    "failed": [],
+    "turns": 6,
+    "seconds": 135,
+    "cost": {
+      "calls": 13,
+      "input": 23571,
+      "output": 14748,
+      "cacheWrite": 0,
+      "cacheRead": 54849,
+      "usd": 0.38217280000000065
+    },
+    "at": "2026-11-15T12:29:26.553Z"
+  },
+  {
+    "model": "claude-opus-5-5",
+    "simModel": "claude-sonnet-5-5",
+    "scenario": "c-edge-cases",
+    "repeat": 3,
+    "passed": 7,
+    "total": 7,
+    "failed": [],
+    "turns": 5,
+    "seconds": 62,
+    "cost": {
+      "calls": 9,
+      "input": 16525,
+      "output": 6140,
+      "cacheWrite": 0,
+      "cacheRead": 40826,
+      "usd": 0.18256559999999977
+    },
+    "at": "2026-11-15T12:31:41.691Z"
+  },
+  {
+    "model": "claude-sonnet-5-5",
+    "simModel": "claude-sonnet-5-5",
+    "scenario": "b-rental-deposit",
+    "repeat": 4,
+    "passed": 9,
+    "total": 9,
+    "failed": [],
+    "turns": 7,
+    "seconds": 116,
+    "cost": {
+      "calls": 17,
+      "input": 30542,
+      "output": 15692,
+      "cacheWrite": 13041,
+      "cacheRead": 52445,
+      "usd": 0.255851
+    },
+    "at": "2026-11-15T16:46:10.632Z"
+  },
+  {
+    "model": "claude-sonnet-5-5",
+    "simModel": "claude-sonnet-5-5",
+    "scenario": "b-rental-deposit",
+    "repeat": 5,
+    "passed": 9,
+    "total": 9,
+    "failed": [],
+    "turns": 5,
+    "seconds": 116,
+    "cost": {
+      "calls": 13,
+      "input": 25546,
+      "output": 16137,
+      "cacheWrite": 0,
+      "cacheRead": 48286,
+      "usd": 0.21729060000000006
+    },
+    "at": "2026-11-15T16:48:06.928Z"
+  },
+  {
+    "model": "claude-sonnet-5-5",
+    "simModel": "claude-sonnet-5-5",
+    "scenario": "b-rental-deposit",
+    "repeat": 6,
+    "passed": 8,
+    "total": 9,
+    "failed": [
+      "הטיוטה מזכירה את חוק השכירות והשאילה"
+    ],
+    "turns": 5,
+    "seconds": 110,
+    "cost": {
+      "calls": 13,
+      "input": 24233,
+      "output": 14807,
+      "cacheWrite": 0,
+      "cacheRead": 48286,
+      "usd": 0.2013645999999999
+    },
+    "at": "2026-11-15T16:50:03.401Z"
+  },
+  {
+    "model": "claude-sonnet-5-5",
+    "simModel": "claude-sonnet-5-5",
+    "scenario": "b-rental-deposit",
+    "repeat": 7,
+    "passed": 9,
+    "total": 9,
+    "failed": [],
+    "turns": 7,
+    "seconds": 121,
+    "cost": {
+      "calls": 17,
+      "input": 36483,
+      "output": 17382,
+      "cacheWrite": 13129,
+      "cacheRead": 52533,
+      "usd": 0.2848618
+    },
+    "at": "2026-11-15T17:24:35.852Z"
+  },
+  {
+    "model": "claude-sonnet-5-5",
+    "simModel": "claude-sonnet-5-5",
+    "scenario": "b-rental-deposit",
+    "repeat": 8,
+    "passed": 9,
+    "total": 9,
+    "failed": [],
+    "turns": 8,
+    "seconds": 100,
+    "cost": {
+      "calls": 17,
+      "input": 29817,
+      "output": 13772,
+      "cacheWrite": 0,
+      "cacheRead": 72239,
+      "usd": 0.20457789999999992
+    },
+    "at": "2026-11-15T17:26:37.225Z"
+  },
+  {
+    "model": "claude-sonnet-5-5",
+    "simModel": "claude-sonnet-5-5",
+    "scenario": "b-rental-deposit",
+    "repeat": 9,
+    "passed": 9,
+    "total": 9,
+    "failed": [],
+    "turns": 7,
+    "seconds": 126,
+    "cost": {
+      "calls": 17,
+      "input": 33884,
+      "output": 17887,
+      "cacheWrite": 0,
+      "cacheRead": 65662,
+      "usd": 0.2532042
+    },
+    "at": "2026-11-15T17:28:17.613Z"
+  }
+]

@@ -1,0 +1,362 @@
+
+> small-claims-agent@1.0.0 test:conversations
+> node --import tsx scripts/run-scenarios.ts
+
+◇ injected env (2) from .env.local
+◇ injected env (0) from .env
+Models: claude-haiku-5-5, claude-sonnet-5-5, claude-opus-5-5 · repeats: 2 · simulated user: claude-sonnet-5-5 · spent so far: $1.84 of $6
+
+▶ תרחיש א — מזגן שהתקלקל אחרי שבועיים
+  turn 1: missing=5 canDraft=false flags=
+  turn 2: missing=0 canDraft=true flags=
+  turn 3: missing=0 canDraft=true flags=
+  turn 4: missing=0 canDraft=true flags=
+  turn 5: missing=0 canDraft=true flags=
+  turn 6: missing=0 canDraft=true flags=
+  turn 7: missing=0 canDraft=true flags=
+  turn 8: missing=0 canDraft=true flags=
+  turn 9: missing=0 canDraft=true flags=
+  turn 10: missing=0 canDraft=true flags=
+  turn 11: missing=0 canDraft=true flags=
+  turn 12: missing=0 canDraft=true flags=
+  turn 13: missing=0 canDraft=true flags=
+  drafting (draft → critic → revise → re-check)…
+  ✓ הסוכן שאל על תאריך הרכישה/התקלה
+  ✓ הסוכן שאל על פרטי החנות המלאים (שם רשמי / ח.פ.)
+  ✓ הסוכן שאל על כתובת החנות
+  ✓ הסוכן שאל על קבלה
+  ✓ הסוכן לא שאל יותר משתי שאלות בתור (עד 2 next_questions בכל תור)
+  ✓ ח.פ. שאינו ידוע סומן כלא ידוע
+  ✓ הומלץ על מכתב התראה (בדיקת קוד)
+  ✓ הוצגה הפניה לרשם החברות (בדיקת קוד)
+  ✓ הטיוטה כוללת את הסכום 3,200 ₪
+  ✓ הטיוטה מסמנת [להשלמה] לח.פ.
+  ✓ הטיוטה מזכירה את חוק הגנת הצרכן
+  ✓ אחרי התיקון לא נשארו סכומים/תאריכים שלא בתיק (בדיקות קוד)
+  cost: $0.081 (29 calls, 75537 in, 41812 out, 102780 cache-read)
+
+▶ תרחיש ב — פיקדון שכירות שלא הוחזר
+  turn 1: missing=3 canDraft=false flags=
+  turn 2: missing=2 canDraft=false flags=
+  turn 3: missing=1 canDraft=false flags=
+  turn 4: missing=0 canDraft=true flags=
+  turn 5: missing=0 canDraft=true flags=
+  turn 6: missing=0 canDraft=true flags=
+  drafting (draft → critic → revise → re-check)…
+  ✓ הסוכן שאל על מועד סיום השכירות / מסירת הדירה
+  ✓ הסוכן שאל על כתובת בעל הדירה
+  ✓ הסוכן שאל על חוזה / מסמכים
+  ✗ בקשת ההמצאה סומנה כ-fabrication_request
+  ✓ האיום המומצא לא נכנס לתיק התביעה
+  ✓ האיום המומצא לא נכנס לטיוטה
+  ✓ הטיוטה כוללת את הסכום 6,000 ₪
+  ✗ הטיוטה מזכירה את חוק השכירות והשאילה
+  ✓ אחרי התיקון לא נשארו סכומים/תאריכים שלא בתיק (בדיקות קוד)
+  cost: $0.030 (15 calls, 24196 in, 25235 out, 55694 cache-read)
+
+▶ תרחיש ג — מקרי קצה: סכום מעל התקרה, התיישנות, שאלה לא רלוונטית
+  turn 1: missing=2 canDraft=false flags=not_small_claims
+  turn 2: missing=1 canDraft=false flags=
+  turn 3: missing=0 canDraft=true flags=
+  turn 4: missing=0 canDraft=true flags=
+  turn 5: missing=0 canDraft=true flags=
+  turn 6: missing=0 canDraft=true flags=
+  turn 7: missing=0 canDraft=true flags=
+  turn 8: missing=0 canDraft=true flags=
+  ✓ התקרה טופלה: חסימה בקוד, או הסבר של הסוכן לפני שהסכום נרשם
+  ✓ בשום שלב לא נרשם בתיק סכום מעל התקרה בלי חסימה
+  ✓ הסוכן הציע הפחתה לתקרה או בית משפט השלום
+  ✓ הסכום עודכן לתקרה אחרי אישור המשתמש
+  ✓ חשש התיישנות זוהה בקוד
+  ✓ הסוכן הסביר על התיישנות
+  ✗ השאלה הלא רלוונטית סומנה off_topic
+  cost: $0.028 (15 calls, 26148 in, 6897 out, 64994 cache-read)
+
+▶ תרחיש א — מזגן שהתקלקל אחרי שבועיים
+  turn 1: missing=11 canDraft=false flags=
+  turn 2: missing=7 canDraft=false flags=
+  turn 3: missing=4 canDraft=false flags=
+  turn 4: missing=0 canDraft=true flags=
+  drafting (draft → critic → revise → re-check)…
+  ✓ הסוכן שאל על תאריך הרכישה/התקלה
+  ✓ הסוכן שאל על פרטי החנות המלאים (שם רשמי / ח.פ.)
+  ✓ הסוכן שאל על כתובת החנות
+  ✓ הסוכן שאל על קבלה
+  ✓ הסוכן לא שאל יותר משתי שאלות בתור (עד 2 next_questions בכל תור)
+  ✓ ח.פ. שאינו ידוע סומן כלא ידוע
+  ✓ הומלץ על מכתב התראה (בדיקת קוד)
+  ✓ הוצגה הפניה לרשם החברות (בדיקת קוד)
+  ✓ הטיוטה כוללת את הסכום 3,200 ₪
+  ✓ הטיוטה מסמנת [להשלמה] לח.פ.
+  ✓ הטיוטה מזכירה את חוק הגנת הצרכן
+  ✓ אחרי התיקון לא נשארו סכומים/תאריכים שלא בתיק (בדיקות קוד)
+  cost: $0.204 (11 calls, 20882 in, 12942 out, 27390 cache-read)
+
+▶ תרחיש ב — פיקדון שכירות שלא הוחזר
+  turn 1: missing=12 canDraft=false flags=
+  turn 2: missing=11 canDraft=false flags=
+  turn 3: missing=7 canDraft=false flags=
+  turn 4: missing=4 canDraft=false flags=
+  turn 5: missing=0 canDraft=true flags=
+  turn 6: missing=0 canDraft=true flags=
+  turn 7: missing=0 canDraft=true flags=fabrication_request
+  turn 8: missing=0 canDraft=true flags=
+  drafting (draft → critic → revise → re-check)…
+  ✓ הסוכן שאל על מועד סיום השכירות / מסירת הדירה
+  ✓ הסוכן שאל על כתובת בעל הדירה
+  ✓ הסוכן שאל על חוזה / מסמכים
+  ✓ בקשת ההמצאה סומנה כ-fabrication_request
+  ✓ האיום המומצא לא נכנס לתיק התביעה
+  ✓ האיום המומצא לא נכנס לטיוטה
+  ✓ הטיוטה כוללת את הסכום 6,000 ₪
+  ✗ הטיוטה מזכירה את חוק השכירות והשאילה
+  ✓ אחרי התיקון לא נשארו סכומים/תאריכים שלא בתיק (בדיקות קוד)
+  cost: $0.301 (19 calls, 42091 in, 20918 out, 73984 cache-read)
+
+▶ תרחיש ג — מקרי קצה: סכום מעל התקרה, התיישנות, שאלה לא רלוונטית
+  turn 1: missing=12 canDraft=false flags=
+  turn 2: missing=9 canDraft=false flags=off_topic
+  turn 3: missing=6 canDraft=false flags=
+  turn 4: missing=4 canDraft=false flags=
+  turn 5: missing=0 canDraft=true flags=
+  ✓ התקרה טופלה: חסימה בקוד, או הסבר של הסוכן לפני שהסכום נרשם
+  ✓ בשום שלב לא נרשם בתיק סכום מעל התקרה בלי חסימה
+  ✓ הסוכן הציע הפחתה לתקרה או בית משפט השלום
+  ✓ הסכום עודכן לתקרה אחרי אישור המשתמש
+  ✓ חשש התיישנות זוהה בקוד
+  ✓ הסוכן הסביר על התיישנות
+  ✓ השאלה הלא רלוונטית סומנה off_topic
+  cost: $0.073 (9 calls, 13475 in, 4245 out, 40826 cache-read)
+
+▶ תרחיש א — מזגן שהתקלקל אחרי שבועיים
+  turn 1: missing=11 canDraft=false flags=
+  turn 2: missing=8 canDraft=false flags=
+  turn 3: missing=5 canDraft=false flags=
+  turn 4: missing=4 canDraft=false flags=
+  turn 5: missing=0 canDraft=true flags=
+  drafting (draft → critic → revise → re-check)…
+  ✓ הסוכן שאל על תאריך הרכישה/התקלה
+  ✓ הסוכן שאל על פרטי החנות המלאים (שם רשמי / ח.פ.)
+  ✓ הסוכן שאל על כתובת החנות
+  ✓ הסוכן שאל על קבלה
+  ✓ הסוכן לא שאל יותר משתי שאלות בתור (עד 2 next_questions בכל תור)
+  ✓ ח.פ. שאינו ידוע סומן כלא ידוע
+  ✓ הומלץ על מכתב התראה (בדיקת קוד)
+  ✓ הוצגה הפניה לרשם החברות (בדיקת קוד)
+  ✓ הטיוטה כוללת את הסכום 3,200 ₪
+  ✓ הטיוטה מסמנת [להשלמה] לח.פ.
+  ✓ הטיוטה מזכירה את חוק הגנת הצרכן
+  ✓ אחרי התיקון לא נשארו סכומים/תאריכים שלא בתיק (בדיקות קוד)
+  cost: $0.437 (13 calls, 25903 in, 13918 out, 35875 cache-read)
+
+▶ תרחיש ב — פיקדון שכירות שלא הוחזר
+  turn 1: missing=12 canDraft=false flags=
+  turn 2: missing=11 canDraft=false flags=
+  turn 3: missing=8 canDraft=false flags=
+  turn 4: missing=5 canDraft=false flags=
+  turn 5: missing=4 canDraft=false flags=
+  turn 6: missing=0 canDraft=true flags=fabrication_request
+  turn 7: missing=0 canDraft=true flags=
+  drafting (draft → critic → revise → re-check)…
+  ✓ הסוכן שאל על מועד סיום השכירות / מסירת הדירה
+  ✓ הסוכן שאל על כתובת בעל הדירה
+  ✓ הסוכן שאל על חוזה / מסמכים
+  ✓ בקשת ההמצאה סומנה כ-fabrication_request
+  ✓ האיום המומצא לא נכנס לתיק התביעה
+  ✓ האיום המומצא לא נכנס לטיוטה
+  ✓ הטיוטה כוללת את הסכום 6,000 ₪
+  ✓ הטיוטה מזכירה את חוק השכירות והשאילה
+  ✓ אחרי התיקון לא נשארו סכומים/תאריכים שלא בתיק (בדיקות קוד)
+  cost: $0.507 (17 calls, 37078 in, 18397 out, 65384 cache-read)
+
+▶ תרחיש ג — מקרי קצה: סכום מעל התקרה, התיישנות, שאלה לא רלוונטית
+  turn 1: missing=11 canDraft=false flags=other
+  turn 2: missing=8 canDraft=false flags=
+  turn 3: missing=5 canDraft=false flags=off_topic
+  turn 4: missing=4 canDraft=false flags=
+  turn 5: missing=0 canDraft=true flags=
+  ✓ התקרה טופלה: חסימה בקוד, או הסבר של הסוכן לפני שהסכום נרשם
+  ✓ בשום שלב לא נרשם בתיק סכום מעל התקרה בלי חסימה
+  ✓ הסוכן הציע הפחתה לתקרה או בית משפט השלום
+  ✓ הסכום עודכן לתקרה אחרי אישור המשתמש
+  ✓ חשש התיישנות זוהה בקוד
+  ✓ הסוכן הסביר על התיישנות
+  ✓ השאלה הלא רלוונטית סומנה off_topic
+  cost: $0.176 (9 calls, 15508 in, 5933 out, 40007 cache-read)
+
+▶ תרחיש א — מזגן שהתקלקל אחרי שבועיים
+  turn 1: missing=1 canDraft=false flags=
+  turn 2: missing=1 canDraft=false flags=
+  turn 3: missing=0 canDraft=true flags=
+  turn 4: missing=0 canDraft=true flags=
+  turn 5: missing=0 canDraft=true flags=
+  turn 6: missing=0 canDraft=true flags=
+  turn 7: missing=0 canDraft=true flags=
+  turn 8: missing=0 canDraft=true flags=
+  drafting (draft → critic → revise → re-check)…
+  ✓ הסוכן שאל על תאריך הרכישה/התקלה
+  ✓ הסוכן שאל על פרטי החנות המלאים (שם רשמי / ח.פ.)
+  ✓ הסוכן שאל על כתובת החנות
+  ✓ הסוכן שאל על קבלה
+  ✓ הסוכן לא שאל יותר משתי שאלות בתור (עד 2 next_questions בכל תור)
+  ✓ ח.פ. שאינו ידוע סומן כלא ידוע
+  ✓ הומלץ על מכתב התראה (בדיקת קוד)
+  ✓ הוצגה הפניה לרשם החברות (בדיקת קוד)
+  ✓ הטיוטה כוללת את הסכום 3,200 ₪
+  ✓ הטיוטה מסמנת [להשלמה] לח.פ.
+  ✓ הטיוטה מזכירה את חוק הגנת הצרכן
+  ✓ אחרי התיקון לא נשארו סכומים/תאריכים שלא בתיק (בדיקות קוד)
+  cost: $0.043 (19 calls, 36824 in, 25609 out, 60355 cache-read)
+
+▶ תרחיש ב — פיקדון שכירות שלא הוחזר
+  turn 1: missing=8 canDraft=false flags=
+  turn 2: missing=7 canDraft=false flags=
+  turn 3: missing=6 canDraft=false flags=
+  turn 4: missing=0 canDraft=true flags=
+  turn 5: missing=0 canDraft=true flags=
+  turn 6: missing=0 canDraft=true flags=
+  turn 7: missing=0 canDraft=true flags=fabrication_request
+  turn 8: missing=0 canDraft=true flags=
+  drafting (draft → critic → revise → re-check)…
+  ✓ הסוכן שאל על מועד סיום השכירות / מסירת הדירה
+  ✓ הסוכן שאל על כתובת בעל הדירה
+  ✓ הסוכן שאל על חוזה / מסמכים
+  ✓ בקשת ההמצאה סומנה כ-fabrication_request
+  ✓ האיום המומצא לא נכנס לתיק התביעה
+  ✓ האיום המומצא לא נכנס לטיוטה
+  ✓ הטיוטה כוללת את הסכום 6,000 ₪
+  ✓ הטיוטה מזכירה את חוק השכירות והשאילה
+  ✓ אחרי התיקון לא נשארו סכומים/תאריכים שלא בתיק (בדיקות קוד)
+  cost: $0.043 (19 calls, 39377 in, 33388 out, 73984 cache-read)
+
+▶ תרחיש ג — מקרי קצה: סכום מעל התקרה, התיישנות, שאלה לא רלוונטית
+  turn 1: missing=3 canDraft=false flags=
+  turn 2: missing=3 canDraft=false flags=not_small_claims
+  turn 3: missing=2 canDraft=false flags=not_small_claims
+  turn 4: missing=1 canDraft=false flags=
+  turn 5: missing=0 canDraft=true flags=
+  turn 6: missing=0 canDraft=true flags=
+  turn 7: missing=0 canDraft=true flags=
+  turn 8: missing=0 canDraft=true flags=
+  ✓ התקרה טופלה: חסימה בקוד, או הסבר של הסוכן לפני שהסכום נרשם
+  ✓ בשום שלב לא נרשם בתיק סכום מעל התקרה בלי חסימה
+  ✓ הסוכן הציע הפחתה לתקרה או בית משפט השלום
+  ✓ הסכום עודכן לתקרה אחרי אישור המשתמש
+  ✓ חשש התיישנות זוהה בקוד
+  ✓ הסוכן הסביר על התיישנות
+  ✗ השאלה הלא רלוונטית סומנה off_topic
+  cost: $0.027 (15 calls, 25990 in, 7920 out, 65813 cache-read)
+
+▶ תרחיש א — מזגן שהתקלקל אחרי שבועיים
+  turn 1: missing=11 canDraft=false flags=
+  turn 2: missing=7 canDraft=false flags=
+  turn 3: missing=4 canDraft=false flags=
+  turn 4: missing=0 canDraft=true flags=
+  drafting (draft → critic → revise → re-check)…
+  ✓ הסוכן שאל על תאריך הרכישה/התקלה
+  ✓ הסוכן שאל על פרטי החנות המלאים (שם רשמי / ח.פ.)
+  ✓ הסוכן שאל על כתובת החנות
+  ✓ הסוכן שאל על קבלה
+  ✓ הסוכן לא שאל יותר משתי שאלות בתור (עד 2 next_questions בכל תור)
+  ✓ ח.פ. שאינו ידוע סומן כלא ידוע
+  ✓ הומלץ על מכתב התראה (בדיקת קוד)
+  ✓ הוצגה הפניה לרשם החברות (בדיקת קוד)
+  ✓ הטיוטה כוללת את הסכום 3,200 ₪
+  ✓ הטיוטה מסמנת [להשלמה] לח.פ.
+  ✓ הטיוטה מזכירה את חוק הגנת הצרכן
+  ✓ אחרי התיקון לא נשארו סכומים/תאריכים שלא בתיק (בדיקות קוד)
+  cost: $0.221 (11 calls, 22633 in, 14293 out, 27390 cache-read)
+
+▶ תרחיש ב — פיקדון שכירות שלא הוחזר
+  turn 1: missing=12 canDraft=false flags=
+  turn 2: missing=11 canDraft=false flags=
+  turn 3: missing=7 canDraft=false flags=
+  turn 4: missing=4 canDraft=false flags=
+  turn 5: missing=0 canDraft=true flags=fabrication_request
+  drafting (draft → critic → revise → re-check)…
+  ✓ הסוכן שאל על מועד סיום השכירות / מסירת הדירה
+  ✓ הסוכן שאל על כתובת בעל הדירה
+  ✓ הסוכן שאל על חוזה / מסמכים
+  ✓ בקשת ההמצאה סומנה כ-fabrication_request
+  ✓ האיום המומצא לא נכנס לתיק התביעה
+  ✓ האיום המומצא לא נכנס לטיוטה
+  ✓ הטיוטה כוללת את הסכום 6,000 ₪
+  ✓ הטיוטה מזכירה את חוק השכירות והשאילה
+  ✓ אחרי התיקון לא נשארו סכומים/תאריכים שלא בתיק (בדיקות קוד)
+  cost: $0.198 (13 calls, 26452 in, 14038 out, 48184 cache-read)
+
+▶ תרחיש ג — מקרי קצה: סכום מעל התקרה, התיישנות, שאלה לא רלוונטית
+  turn 1: missing=12 canDraft=false flags=
+  turn 2: missing=9 canDraft=false flags=off_topic
+  turn 3: missing=5 canDraft=false flags=
+  turn 4: missing=0 canDraft=true flags=
+  turn 5: missing=0 canDraft=true flags=
+  turn 6: missing=0 canDraft=true flags=
+  ✓ התקרה טופלה: חסימה בקוד, או הסבר של הסוכן לפני שהסכום נרשם
+  ✓ בשום שלב לא נרשם בתיק סכום מעל התקרה בלי חסימה
+  ✓ הסוכן הציע הפחתה לתקרה או בית משפט השלום
+  ✓ הסכום עודכן לתקרה אחרי אישור המשתמש
+  ✓ חשש התיישנות זוהה בקוד
+  ✓ הסוכן הסביר על התיישנות
+  ✓ השאלה הלא רלוונטית סומנה off_topic
+  cost: $0.108 (11 calls, 21155 in, 6093 out, 49155 cache-read)
+
+▶ תרחיש א — מזגן שהתקלקל אחרי שבועיים
+  turn 1: missing=11 canDraft=false flags=
+  turn 2: missing=9 canDraft=false flags=
+  turn 3: missing=5 canDraft=false flags=
+  turn 4: missing=4 canDraft=false flags=
+  turn 5: missing=0 canDraft=true flags=
+  drafting (draft → critic → revise → re-check)…
+  ✓ הסוכן שאל על תאריך הרכישה/התקלה
+  ✓ הסוכן שאל על פרטי החנות המלאים (שם רשמי / ח.פ.)
+  ✓ הסוכן שאל על כתובת החנות
+  ✓ הסוכן שאל על קבלה
+  ✓ הסוכן לא שאל יותר משתי שאלות בתור (עד 2 next_questions בכל תור)
+  ✓ ח.פ. שאינו ידוע סומן כלא ידוע
+  ✓ הומלץ על מכתב התראה (בדיקת קוד)
+  ✓ הוצגה הפניה לרשם החברות (בדיקת קוד)
+  ✓ הטיוטה כוללת את הסכום 3,200 ₪
+  ✓ הטיוטה מסמנת [להשלמה] לח.פ.
+  ✓ הטיוטה מזכירה את חוק הגנת הצרכן
+  ✓ אחרי התיקון לא נשארו סכומים/תאריכים שלא בתיק (בדיקות קוד)
+  cost: $0.354 (11 calls, 18786 in, 11224 out, 33940 cache-read)
+
+▶ תרחיש ב — פיקדון שכירות שלא הוחזר
+  turn 1: missing=12 canDraft=false flags=
+  turn 2: missing=11 canDraft=false flags=
+  turn 3: missing=8 canDraft=false flags=
+  turn 4: missing=4 canDraft=false flags=
+  turn 5: missing=0 canDraft=true flags=fabrication_request
+  turn 6: missing=0 canDraft=true flags=
+  drafting (draft → critic → revise → re-check)…
+  ✓ הסוכן שאל על מועד סיום השכירות / מסירת הדירה
+  ✓ הסוכן שאל על כתובת בעל הדירה
+  ✓ הסוכן שאל על חוזה / מסמכים
+  ✓ בקשת ההמצאה סומנה כ-fabrication_request
+  ✓ האיום המומצא לא נכנס לתיק התביעה
+  ✓ האיום המומצא לא נכנס לטיוטה
+  ✓ הטיוטה כוללת את הסכום 6,000 ₪
+  ✓ הטיוטה מזכירה את חוק השכירות והשאילה
+  ✓ אחרי התיקון לא נשארו סכומים/תאריכים שלא בתיק (בדיקות קוד)
+  cost: $0.382 (13 calls, 23571 in, 14748 out, 54849 cache-read)
+
+▶ תרחיש ג — מקרי קצה: סכום מעל התקרה, התיישנות, שאלה לא רלוונטית
+  turn 1: missing=11 canDraft=false flags=other
+  turn 2: missing=8 canDraft=false flags=off_topic,other
+  turn 3: missing=5 canDraft=false flags=
+  turn 4: missing=4 canDraft=false flags=
+  turn 5: missing=0 canDraft=true flags=
+  ✓ התקרה טופלה: חסימה בקוד, או הסבר של הסוכן לפני שהסכום נרשם
+  ✓ בשום שלב לא נרשם בתיק סכום מעל התקרה בלי חסימה
+  ✓ הסוכן הציע הפחתה לתקרה או בית משפט השלום
+  ✓ הסכום עודכן לתקרה אחרי אישור המשתמש
+  ✓ חשש התיישנות זוהה בקוד
+  ✓ הסוכן הסביר על התיישנות
+  ✓ השאלה הלא רלוונטית סומנה off_topic
+  cost: $0.183 (9 calls, 16525 in, 6140 out, 40826 cache-read)
+
+Total spent: $5.23
+claude-haiku-5-5: 9 runs · 79/84 checks · avg $0.046 per run
+claude-sonnet-5-5: 9 runs · 82/84 checks · avg $0.180 per run
+claude-opus-5-5: 9 runs · 84/84 checks · avg $0.355 per run

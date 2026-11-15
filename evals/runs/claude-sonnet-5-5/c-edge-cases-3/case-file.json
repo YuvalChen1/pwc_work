@@ -1,0 +1,73 @@
+{
+  "caseFile": {
+    "case_type": "services",
+    "plaintiff": {
+      "full_name": "אבי מזרחי",
+      "id_number": "311489512",
+      "address": "רחוב הגפן 3, באר שבע",
+      "phone": "050-1112233"
+    },
+    "defendant": {
+      "name": "יוסי ביטון",
+      "entity_type": "licensed_dealer",
+      "registration_number": null,
+      "address": null
+    },
+    "incident_date": "2018-03",
+    "timeline": [
+      {
+        "date": "2018-03",
+        "description": "הקבלן קיבל מהתובע מקדמה בסך 45,000 ש\"ח עבור שיפוץ מטבח"
+      },
+      {
+        "date": "2018",
+        "description": "התובע התקשר לקבלן כמה פעמים; הקבלן הבטיח להחזיר את הכסף ולא החזיר"
+      }
+    ],
+    "facts": [
+      "קבלן שיפוצים לקח מהתובע 45,000 ש\"ח כמקדמה בשנת 2018",
+      "הקבלן לא ביצע שום עבודה",
+      "השיפוץ שהוסכם היה שיפוץ מטבח",
+      "המקדמה שולמה במרץ 2018",
+      "התובע התקשר לקבלן כמה פעמים ב-2018",
+      "הקבלן הבטיח להחזיר את הכסף ולא החזיר",
+      "התובע מקטין את סכום התביעה ל-39,900 ש\"ח ומוותר על ההפרש מתוך המקדמה",
+      "לפי ההסכם הקבלן מצוין כעוסק מורשה ולא מופיעה בו חברה",
+      "בהסכם ובצ'ק לא מופיעים מספר עוסק או ת.ז. של הקבלן, למיטב ידיעת התובע"
+    ],
+    "amount": {
+      "total": 39900,
+      "breakdown": [
+        {
+          "item": "החזר מקדמה (לאחר הקטנה לתקרה וויתור על ההפרש)",
+          "amount": 39900
+        }
+      ]
+    },
+    "settlement": {
+      "attempts": [
+        {
+          "date": "2018",
+          "method": "שיחות טלפון",
+          "result": "הקבלן הבטיח להחזיר ולא החזיר"
+        }
+      ],
+      "demand_letter_sent": false,
+      "demand_letter_date": null
+    },
+    "evidence": [
+      {
+        "description": "הסכם בכתב יד",
+        "in_possession": true
+      },
+      {
+        "description": "צילום של הצ'ק ששולם כמקדמה",
+        "in_possession": true
+      }
+    ]
+  },
+  "unknownFields": [
+    "defendant.address",
+    "defendant.registration_number"
+  ]
+}
